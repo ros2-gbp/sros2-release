@@ -1,1 +1,1 @@
-{"parent": "debian/ardent/sros2", "base": "7242691", "trimbase": "", "trim": "", "previous": "3f9c428"}
+{"trim": "", "parent": "debian/ardent/sros2", "previous": "6844d50", "trimbase": "", "base": "89aeda3"}
