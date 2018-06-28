@@ -1,0 +1,12 @@
+Source: ros-bouncy-sros2
+Section: misc
+Priority: extra
+Maintainer: Mikael Arguedas <mikael@osrfoundation.org>
+Build-Depends: debhelper (>= 9.0.0), python3-pytest, ros-bouncy-ament-copyright, ros-bouncy-ament-flake8, ros-bouncy-ament-pep257, ros-bouncy-ros2cli, ros-bouncy-ros-workspace, python3-all, python3-setuptools
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-bouncy-sros2
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}, openssl, ros-bouncy-ros2cli, ros-bouncy-ros-workspace
+Description: Command line tools for managing SROS2 keys
