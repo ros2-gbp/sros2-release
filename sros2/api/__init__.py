@@ -77,12 +77,18 @@ crlnumber = $dir/crlnumber
 crl = $dir/crl.pem
 RANDFILE = $dir/private/.rand
 name_opt = ca_default
-cert_opt       = ca_default
+cert_opt = ca_default
 default_days = 1825
 default_crl_days = 30
 default_md = sha256
 preserve = no
 policy = policy_match
+x509_extensions = local_ca_extensions
+#
+#
+# Copy extensions specified in the certificate request
+#
+copy_extensions = copy
 
 [ policy_match ]
 countryName = optional
@@ -92,13 +98,24 @@ organizationalUnitName = optional
 commonName = supplied
 emailAddress = optional
 
+#
+#
+# x509 extensions to use when generating server certificates.
+#
+[ local_ca_extensions ]
+basicConstraints = CA:false
+
 [ req ]
 prompt = no
 distinguished_name = req_distinguished_name
 string_mask = utf8only
+x509_extensions = root_ca_extensions
 
 [ req_distinguished_name ]
 commonName = sros2testCA
+
+[ root_ca_extensions ]
+basicConstraints = CA:true
 """)
 
 
@@ -148,6 +165,7 @@ def create_governance_file(path, domain_id):
                 <topic_rule>
                     <topic_expression>*</topic_expression>
                     <enable_discovery_protection>true</enable_discovery_protection>
+                    <enable_liveliness_protection>true</enable_liveliness_protection>
                     <enable_read_access_control>true</enable_read_access_control>
                     <enable_write_access_control>true</enable_write_access_control>
                     <metadata_protection_kind>ENCRYPT</metadata_protection_kind>
@@ -333,13 +351,50 @@ def create_permission_file(path, name, domain_id, permissions_dict):
                 permission_str += """\
         <%s>
           <partitions>
-            <partition>%s</partition>
+            <partition></partition>
           </partitions>
           <topics>
             <topic>%s</topic>
           </topics>
         </%s>
-""" % (tag, 'rt', topic_name, tag)
+""" % (tag, 'rt/' + topic_name, tag)
+        # TODO(mikaelarguedas) remove this hardcoded handling for default parameter topics
+        service_topic_prefixes = {
+            'Request': 'rq/%s/' % name,
+            'Reply': 'rr/%s/' % name,
+        }
+        default_parameter_topics = [
+            'describe_parameters',
+            'get_parameters',
+            'get_parameter_types',
+            'list_parameters',
+            'set_parameters',
+            'set_parameters_atomically',
+        ]
+        for topic_suffix, topic_prefix in service_topic_prefixes.items():
+            service_topics = [
+                (topic_prefix + topic + topic_suffix) for topic in default_parameter_topics]
+            topics_string = ''
+            for service_topic in service_topics:
+                topics_string += """
+            <topic>%s</topic>""" % (service_topic)
+            permission_str += """
+        <publish>
+          <partitions>
+            <partition></partition>
+          </partitions>
+          <topics>%s
+          </topics>
+        </publish>
+        <subscribe>
+          <partitions>
+            <partition></partition>
+          </partitions>
+          <topics>%s
+          </topics>
+        </subscribe>
+""" % (topics_string, topics_string)
+
     else:
         # no policy found: allow everything!
         permission_str += """\
@@ -361,55 +416,7 @@ def create_permission_file(path, name, domain_id, permissions_dict):
         </subscribe>
 """
 
-    # TODO(mikaelarguedas) remove this hardcoded handling for default parameter topics
-    # TODO(mikaelarguedas) remove the need for empty partition (required for Connext at startup),
-    # see https://github.com/ros2/sros2/issues/32#issuecomment-367388140
-    service_partitions_prefix = {
-        'Request': ['', 'rq/%s' % name],
-        'Reply': ['', 'rr/%s' % name],
-    }
-    default_parameter_topics = [
-        'get_parameters',
-        'get_parameter_types',
-        'set_parameters',
-        'list_parameters',
-        'describe_parameters',
-    ]
-    for key in service_partitions_prefix.keys():
-        if key == 'Request':
-            pubsubtag = 'publish'
-        else:
-            pubsubtag = 'subscribe'
-        tag = 'partition'
-        partition_string = \
-            '<%s>' % tag + \
-            ('</%s><%s>' % (tag, tag)).join(
-                [partition for partition in service_partitions_prefix[key]]) + \
-            '</%s>' % tag
-        tag = 'topic'
-        topics_string = \
-            '<%s>' % tag + \
-            ('</%s><%s>' % (tag, tag)).join(
-                [(topic + key) for topic in default_parameter_topics]) + \
-            '</%s>' % tag
-        permission_str += """\
-        <%s>
-          <partitions>
-            %s
-          </partitions>
-          <topics>
-            %s
-          </topics>
-        </%s>
-""" % (pubsubtag, partition_string, topics_string, pubsubtag)
-
-    # DCPS* is necessary for builtin data readers
     permission_str += """\
-        <subscribe>
-          <topics>
-            <topic>DCPS*</topic>
-          </topics>
-        </subscribe>
       </allow_rule>
       <default>DENY</default>
     </grant>
@@ -461,6 +468,7 @@ def create_permission(args):
     create_signed_permissions_file(
         permissions_path, signed_permissions_path,
         keystore_ca_cert_path, keystore_ca_key_path)
+    return True
 
 
 def create_key(args):
@@ -539,7 +547,4 @@ def list_keys(args):
 
 
 def distribute_key(args):
-    print('distributing key')
-    print(args)
-    print("just kidding, sorry, this isn't implemented yet.")
-    return True
+    raise NotImplementedError()
