@@ -1,0 +1,41 @@
+ros-crystal-sros2-cmake (0.6.3-0bionic) bionic; urgency=high
+
+  * linter invocation fixup (#97 <https://github.com/ros2/sros2/issues/97>)
+  * command needs to be a list and not a string (#96 <https://github.com/ros2/sros2/issues/96>) (#98 <https://github.com/ros2/sros2/issues/98>)
+  * [crystal-backport] Backport XML and XSLT functionality (#93 <https://github.com/ros2/sros2/issues/93>)
+  * Contributors: Mikael Arguedas, Jacob Perron, Ross Desmond, Ruffin White
+
+ -- AWS B9 Team <aws-b9-platform@amazon.com>  Tue, 12 Mar 2019 05:00:00 -0000
+
+ros-crystal-sros2-cmake (0.6.2-0bionic) bionic; urgency=high
+
+  * Create package for sros2 cmake macros. (#75 <https://github.com/ros2/sros2/issues/75>)
+  * Contributors: Ross Desmond
+
+ -- AWS B9 Team <aws-b9-platform@amazon.com>  Fri, 08 Feb 2019 06:00:00 -0000
+
+ros-crystal-sros2-cmake (0.6.1-0bionic) bionic; urgency=high
+
+
+
+ -- AWS B9 Team <aws-b9-platform@amazon.com>  Tue, 15 Jan 2019 06:00:00 -0000
+
+ros-crystal-sros2-cmake (0.6.0-0bionic) bionic; urgency=high
+
+
+
+ -- AWS B9 Team <aws-b9-platform@amazon.com>  Fri, 07 Dec 2018 06:00:00 -0000
+
+ros-crystal-sros2-cmake (0.5.0-0bionic) bionic; urgency=high
+
+
+
+ -- AWS B9 Team <aws-b9-platform@amazon.com>  Wed, 27 Jun 2018 05:00:00 -0000
+
+ros-crystal-sros2-cmake (0.4.0-0bionic) bionic; urgency=high
+
+
+
+ -- AWS B9 Team <aws-b9-platform@amazon.com>  Fri, 08 Dec 2017 06:00:00 -0000
+
+
