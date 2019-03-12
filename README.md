@@ -1,3 +1,28 @@
+## sros2 (crystal) - 0.6.3-0
+
+The packages in the `sros2` repository were released into the `crystal` distro by running `/usr/bin/bloom-release --rosdistro crystal sros2` on `Tue, 12 Mar 2019 21:29:08 -0000`
+
+These packages were released:
+- `sros2`
+- `sros2_cmake`
+
+Version of package(s) in repository `sros2`:
+
+- upstream repository: https://github.com/ros2/sros2.git
+- release repository: https://github.com/ros2-gbp/sros2-release.git
+- rosdistro version: `0.6.2-0`
+- old version: `0.6.2-0`
+- new version: `0.6.3-0`
+
+Versions of tools used:
+
+- bloom version: `0.7.2`
+- catkin_pkg version: `0.4.10`
+- rosdep version: `0.15.1`
+- rosdistro version: `0.7.2`
+- vcstools version: `0.1.40`
+
+
 ## sros2 (crystal) - 0.6.2-0
 
 The packages in the `sros2` repository were released into the `crystal` distro by running `/usr/bin/bloom-release -r crystal sros2 --override-release-repository-push-url git@github.com:ros2-gbp/sros2-release` on `Fri, 08 Feb 2019 19:35:35 -0000`
