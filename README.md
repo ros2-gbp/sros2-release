@@ -1,3 +1,28 @@
+## sros2 (dashing) - 0.7.0-1
+
+The packages in the `sros2` repository were released into the `dashing` distro by running `/usr/bin/bloom-release --rosdistro dashing --track dashing sros2` on `Thu, 09 May 2019 00:45:48 -0000`
+
+These packages were released:
+- `sros2`
+- `sros2_cmake`
+
+Version of package(s) in repository `sros2`:
+
+- upstream repository: https://github.com/ros2/sros2.git
+- release repository: unknown
+- rosdistro version: `null`
+- old version: `null`
+- new version: `0.7.0-1`
+
+Versions of tools used:
+
+- bloom version: `0.8.0`
+- catkin_pkg version: `0.4.12`
+- rosdep version: `0.15.1`
+- rosdistro version: `0.7.4`
+- vcstools version: `0.1.40`
+
+
 ## sros2 (crystal) - 0.6.3-0
 
 The packages in the `sros2` repository were released into the `crystal` distro by running `/usr/bin/bloom-release --rosdistro crystal sros2` on `Tue, 12 Mar 2019 21:29:08 -0000`
