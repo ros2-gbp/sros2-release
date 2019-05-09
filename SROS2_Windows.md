@@ -6,11 +6,11 @@
 
 #### Install ROS2 from binaries
 
-Please follow [these instructions](https://github.com/ros2/ros2/wiki/Windows-Install-Binary)
+Please follow [these instructions](https://index.ros.org/doc/ros2/Installation/Windows-Install-Binary)
 
 #### Install ROS2 from source
 
-Please follow [these instructions](https://github.com/ros2/ros2/wiki/Windows-Development-Setup) and stop at the beginning of "Build the code" section
+Please follow [these instructions](https://index.ros.org/doc/ros2/Installation/Windows-Development-Setup) and stop at the beginning of "Build the code" section
 
 To build the ROS2 code with security extensions, call:
 ```bat
@@ -19,12 +19,12 @@ colcon build --cmake-args -DSECURITY=ON
 
 ### Install OpenSSL
 
-If you don't have OpenSSL installed, please see follow [these instructions](https://github.com/ros2/ros2/wiki/Windows-Install-Binary#install-openssl)
+If you don't have OpenSSL installed, please see follow [these instructions](https://index.ros.org/doc/ros2/Installation/Windows-Install-Binary#install-openssl)
 
 ### Additional configuration for RTI Connext
 
 To use DDS-Security with Connext you will need to procure an RTI Licence and install the security plugin.
-See [this page](https://github.com/ros2/ros2/wiki/Install-Connext-Security-Plugins) for details on installing the security plugins.
+See [this page](https://index.ros.org/doc/ros2/Installation/Install-Connext-Security-Plugins) for details on installing the security plugins.
 
 
 ## Preparing the environment for the demo
@@ -72,7 +72,7 @@ set ROS_SECURITY_STRATEGY=Enforce
 
 ## Run the demo
 
-ROS2 allows you to [change DDS implementation at runtime](https://github.com/ros2/ros2/wiki/Working-with-multiple-RMW-implementations).
+ROS2 allows you to [change DDS implementation at runtime](https://index.ros.org/doc/ros2/Tutorials/Working-with-multiple-RMW-implementations).
 This demo can be run with fastrtps by setting:
 ```bat
 set RMW_IMPLEMENTATION=rmw_fastrtps_cpp
@@ -129,7 +129,7 @@ To do this, we will use the sample policy file provided in `examples/sample_poli
 First, we will copy this sample policy file into our keystore:
 
 ```bat
-svn checkout https://github.com/ros2/sros2/trunk/sros2/sros2/test/policies
+svn checkout https://github.com/ros2/sros2/trunk/sros2/test/policies
 ```
 
 And now we will use it to generate the XML permission files expected by the middleware:

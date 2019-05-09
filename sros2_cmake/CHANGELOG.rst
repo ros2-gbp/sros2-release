@@ -2,12 +2,17 @@
 Changelog for package sros2_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.6.3 (2019-03-12)
+0.7.0 (2019-05-08)
 ------------------
-* linter invocation fixup (`#97 <https://github.com/ros2/sros2/issues/97>`_)
-* command needs to be a list and not a string (`#96 <https://github.com/ros2/sros2/issues/96>`_) (`#98 <https://github.com/ros2/sros2/issues/98>`_)
-* [crystal-backport] Backport XML and XSLT functionality (`#93 <https://github.com/ros2/sros2/issues/93>`_)
-* Contributors: Mikael Arguedas, Jacob Perron, Ross Desmond, Ruffin White
+* make sros2_cmake use generate_artifacts command (`#108 <https://github.com/ros2/sros2/issues/108>`_)
+* default keystore in install space insted of build space (`#103 <https://github.com/ros2/sros2/issues/103>`_)
+* make sros2_cmake an ament package (`#101 <https://github.com/ros2/sros2/issues/101>`_)
+* remove unnecessary build dependencies (`#100 <https://github.com/ros2/sros2/issues/100>`_)
+* linter invocation fixup (`#95 <https://github.com/ros2/sros2/issues/95>`_)
+* command needs to be a list and not a string (`#96 <https://github.com/ros2/sros2/issues/96>`_)
+* Add CMake lint test to sros2_cmake (`#90 <https://github.com/ros2/sros2/issues/90>`_)
+* fix status print to match commands invoked
+* Contributors: Jacob Perron, Mikael Arguedas
 
 0.6.2 (2019-02-08)
 ------------------
