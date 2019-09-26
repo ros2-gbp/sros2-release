@@ -2,8 +2,11 @@
 Changelog for package sros2_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.7.1 (2019-06-12)
+0.8.0 (2019-09-26)
 ------------------
+* Fix author, maintainer information in sros2_cmake/package.xml (`#156 <https://github.com/ros2/sros2/issues/156>`_)
+* Display sros2 invocation console output (`#150 <https://github.com/ros2/sros2/issues/150>`_)
+* Contributors: AAlon, Mikael Arguedas
 
 0.7.0 (2019-05-08)
 ------------------
