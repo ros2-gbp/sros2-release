@@ -1,3 +1,28 @@
+## sros2 (eloquent) - 0.8.0-1
+
+The packages in the `sros2` repository were released into the `eloquent` distro by running `/home/jacob/.local/bin/bloom-release -r eloquent -t eloquent sros2` on `Thu, 26 Sep 2019 21:49:25 -0000`
+
+These packages were released:
+- `sros2`
+- `sros2_cmake`
+
+Version of package(s) in repository `sros2`:
+
+- upstream repository: https://github.com/ros2/sros2.git
+- release repository: unknown
+- rosdistro version: `null`
+- old version: `null`
+- new version: `0.8.0-1`
+
+Versions of tools used:
+
+- bloom version: `0.8.0`
+- catkin_pkg version: `0.4.13`
+- rosdep version: `0.16.1`
+- rosdistro version: `0.7.4`
+- vcstools version: `0.1.42`
+
+
 ## sros2 (dashing) - 0.7.1-1
 
 The packages in the `sros2` repository were released into the `dashing` distro by running `/usr/bin/bloom-release --rosdistro dashing --track dashing sros2` on `Wed, 12 Jun 2019 20:10:53 -0000`
