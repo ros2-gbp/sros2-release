@@ -1,0 +1,12 @@
+Source: ros-eloquent-sros2
+Section: misc
+Priority: optional
+Maintainer: Michael Carroll <michael@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), python3-pytest, ros-eloquent-ament-copyright, ros-eloquent-ament-flake8, ros-eloquent-ament-mypy, ros-eloquent-ament-pep257, ros-eloquent-rclpy, ros-eloquent-ros2cli, ros-eloquent-std-msgs, ros-eloquent-std-srvs, ros-eloquent-ros-workspace, python3-all, python3-setuptools
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-eloquent-sros2
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}, python3-cryptography, python3-lxml, ros-eloquent-ament-index-python, ros-eloquent-rclpy, ros-eloquent-ros2cli, ros-eloquent-ros-workspace
+Description: Command line tools for managing SROS2 keys
