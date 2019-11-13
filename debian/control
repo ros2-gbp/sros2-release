@@ -1,0 +1,12 @@
+Source: ros-eloquent-sros2-cmake
+Section: misc
+Priority: optional
+Maintainer: AWS RoboMaker <ros-contributions@amazon.com>
+Build-Depends: debhelper (>= 9.0.0), ros-eloquent-ament-cmake, ros-eloquent-ament-cmake-test, ros-eloquent-ament-lint-auto, ros-eloquent-ament-lint-common, ros-eloquent-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-eloquent-sros2-cmake
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-eloquent-ros2cli, ros-eloquent-sros2, ros-eloquent-ros-workspace
+Description: Cmake macros to configure security for nodes
