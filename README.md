@@ -1,3 +1,28 @@
+## sros2 (eloquent) - 0.8.1-1
+
+The packages in the `sros2` repository were released into the `eloquent` distro by running `/home/mjcarroll/.local/bin/bloom-release --ros-distro eloquent sros2` on `Wed, 13 Nov 2019 13:55:25 -0000`
+
+These packages were released:
+- `sros2`
+- `sros2_cmake`
+
+Version of package(s) in repository `sros2`:
+
+- upstream repository: https://github.com/ros2/sros2.git
+- release repository: https://github.com/ros2-gbp/sros2-release.git
+- rosdistro version: `0.8.0-1`
+- old version: `0.8.0-1`
+- new version: `0.8.1-1`
+
+Versions of tools used:
+
+- bloom version: `0.9.0`
+- catkin_pkg version: `0.4.14`
+- rosdep version: `0.17.1`
+- rosdistro version: `0.7.5`
+- vcstools version: `0.1.42`
+
+
 ## sros2 (eloquent) - 0.8.0-1
 
 The packages in the `sros2` repository were released into the `eloquent` distro by running `/home/jacob/.local/bin/bloom-release -r eloquent -t eloquent sros2` on `Thu, 26 Sep 2019 21:49:25 -0000`
