@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+from pathlib import Path
 from xml.etree import ElementTree
 
 from cryptography import x509
@@ -22,7 +22,7 @@ from cryptography.hazmat.primitives.serialization import load_pem_private_key
 import pytest
 
 from ros2cli import cli
-from sros2.api import _DEFAULT_COMMON_NAME
+from sros2.api import _keystore, _utilities
 
 
 # This fixture will run once for the entire module (as opposed to once per test)
@@ -34,31 +34,47 @@ def keystore_dir(tmpdir_factory):
     assert cli.main(argv=['security', 'create_keystore', keystore_dir]) == 0
 
     # Return path to keystore directory
-    return keystore_dir
+    return Path(keystore_dir)
 
 
 def test_create_keystore(keystore_dir):
-    expected_files = (
-        'ca.cert.pem', 'ca.key.pem', 'governance.p7s', 'governance.xml'
+    public = keystore_dir / 'public'
+    private = keystore_dir / 'private'
+    enclaves = keystore_dir / 'enclaves'
+    expected_files_public = (
+        public / 'ca.cert.pem',
+        public / 'permissions_ca.cert.pem',
+        public / 'identity_ca.cert.pem',
     )
-    assert len(os.listdir(keystore_dir)) == len(expected_files)
+    expected_files_private = (
+        private / 'ca.key.pem',
+        private / 'permissions_ca.key.pem',
+        private / 'identity_ca.key.pem',
+    )
+    expected_files_enclaves = (
+        enclaves / 'governance.p7s',
+        enclaves / 'governance.xml',
+    )
 
-    for expected_file in expected_files:
-        assert os.path.isfile(os.path.join(keystore_dir, expected_file))
+    assert len(list(keystore_dir.iterdir())) == 3
+    assert len(list(public.iterdir())) == len(expected_files_public)
+    assert len(list(private.iterdir())) == len(expected_files_private)
+    assert len(list(enclaves.iterdir())) == len(expected_files_enclaves)
+    expected_files = expected_files_public + expected_files_private + expected_files_enclaves
+    assert all(x.is_file() for x in expected_files)
 
 
 def test_ca_cert(keystore_dir):
-    with open(os.path.join(keystore_dir, 'ca.cert.pem'), 'rb') as f:
-        cert = x509.load_pem_x509_certificate(f.read(), cryptography_backend())
-        names = cert.subject.get_attributes_for_oid(x509.oid.NameOID.COMMON_NAME)
-        assert len(names) == 1
-        assert names[0].value == _DEFAULT_COMMON_NAME
-        names = cert.subject.get_attributes_for_oid(x509.oid.NameOID.ORGANIZATION_NAME)
-        assert len(names) == 0
+    cert = _utilities.load_cert(keystore_dir / 'public' / 'ca.cert.pem')
+    names = cert.subject.get_attributes_for_oid(x509.oid.NameOID.COMMON_NAME)
+    assert len(names) == 1
+    assert names[0].value == _keystore._DEFAULT_COMMON_NAME
+    names = cert.subject.get_attributes_for_oid(x509.oid.NameOID.ORGANIZATION_NAME)
+    assert len(names) == 0
 
 
 def test_ca_key(keystore_dir):
-    with open(os.path.join(keystore_dir, 'ca.key.pem'), 'rb') as f:
+    with (keystore_dir / 'private' / 'ca.key.pem').open('rb') as f:
         key = load_pem_private_key(f.read(), password=None, backend=cryptography_backend())
         public = key.public_key()
         assert public.curve.name == 'secp256r1'
@@ -67,7 +83,7 @@ def test_ca_key(keystore_dir):
 def test_governance_p7s(keystore_dir):
     # Would really like to verify the signature, but ffi just can't use
     # that part of the OpenSSL API
-    with open(os.path.join(keystore_dir, 'governance.p7s')) as f:
+    with (keystore_dir / 'enclaves' / 'governance.p7s').open('r') as f:
         lines = f.readlines()
         assert lines[0] == 'MIME-Version: 1.0\n'
         assert lines[1].startswith(
@@ -76,4 +92,4 @@ def test_governance_p7s(keystore_dir):
 
 def test_governance_xml(keystore_dir):
     # Validates valid XML
-    ElementTree.parse(os.path.join(keystore_dir, 'governance.xml'))
+    ElementTree.parse(str(keystore_dir / 'enclaves' / 'governance.xml'))

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections import namedtuple
 import os
 import sys
 
@@ -28,16 +29,8 @@ except ImportError:
 
 from lxml import etree
 
-from ros2cli.node.direct import DirectNode
+from ros2cli.node.strategy import add_arguments as add_strategy_node_arguments
 from ros2cli.node.strategy import NodeStrategy
-
-from sros2.api import (
-    get_client_info,
-    get_node_names,
-    get_publisher_info,
-    get_service_info,
-    get_subscriber_info
-)
 
 from sros2.policy import (
     dump_policy,
@@ -48,50 +41,55 @@ from sros2.policy import (
 from sros2.verb import VerbExtension
 
 
-def formatTopics(topic_list, permission, topic_map):
-    for topic in topic_list:
-        topic_map[topic.name].append(permission)
+_HIDDEN_NODE_PREFIX = '_'
+
+_NodeName = namedtuple('NodeName', ('node', 'ns', 'fqn', 'path'))
+_TopicInfo = namedtuple('Topic', ('fqn', 'type'))
 
 
 class GeneratePolicyVerb(VerbExtension):
     """Generate XML policy file from ROS graph data."""
 
     def add_arguments(self, parser, cli_name):
-
         arg = parser.add_argument(
             'POLICY_FILE_PATH', help='path of the policy xml file')
         arg.completer = FilesCompleter(
             allowednames=('xml'), directories=False)
+        add_strategy_node_arguments(parser)
 
     def get_policy(self, policy_file_path):
         if os.path.isfile(policy_file_path):
             return load_policy(policy_file_path)
         else:
-            profiles = etree.Element('profiles')
+            enclaves = etree.Element('enclaves')
             policy = etree.Element('policy')
             policy.attrib['version'] = POLICY_VERSION
-            policy.append(profiles)
+            policy.append(enclaves)
             return policy
 
     def get_profile(self, policy, node_name):
-        profile = policy.find(
-            path='profiles/profile[@ns="{ns}"][@node="{node}"]'.format(
-                ns=node_name.ns,
-                node=node_name.node))
+        enclave = policy.find(
+            path=f'enclaves/enclave[@path="{node_name.path}"]')
+        if enclave is None:
+            enclave = etree.Element('enclave')
+            enclave.attrib['path'] = node_name.path
+            profiles = etree.Element('profiles')
+            enclave.append(profiles)
+            enclaves = policy.find('enclaves')
+            enclaves.append(enclave)
+        profile = enclave.find(
+            path=f'profiles/profile[@ns="{node_name.ns}"][@node="{node_name.node}"]')
         if profile is None:
             profile = etree.Element('profile')
             profile.attrib['ns'] = node_name.ns
             profile.attrib['node'] = node_name.node
-            profiles = policy.find('profiles')
+            profiles = enclave.find('profiles')
             profiles.append(profile)
         return profile
 
     def get_permissions(self, profile, permission_type, rule_type, rule_qualifier):
         permissions = profile.find(
-            path='{permission_type}s[@{rule_type}="{rule_qualifier}"]'.format(
-                permission_type=permission_type,
-                rule_type=rule_type,
-                rule_qualifier=rule_qualifier))
+            path=f'{permission_type}s[@{rule_type}="{rule_qualifier}"]')
         if permissions is None:
             permissions = etree.Element(permission_type + 's')
             permissions.attrib[rule_type] = rule_qualifier
@@ -115,31 +113,29 @@ class GeneratePolicyVerb(VerbExtension):
 
     def main(self, *, args):
         policy = self.get_policy(args.POLICY_FILE_PATH)
-        node_names = []
         with NodeStrategy(args) as node:
-            node_names = get_node_names(node=node, include_hidden_nodes=False)
+            node_names = _get_node_names(node=node, include_hidden_nodes=False)
 
-        if not len(node_names):
-            print('No nodes detected in the ROS graph. No policy file was generated.',
-                  file=sys.stderr)
-            return 1
+            if not len(node_names):
+                print('No nodes detected in the ROS graph. No policy file was generated.',
+                      file=sys.stderr)
+                return 1
 
-        with DirectNode(args) as node:
             for node_name in node_names:
                 profile = self.get_profile(policy, node_name)
-                subscribe_topics = get_subscriber_info(node=node, node_name=node_name)
+                subscribe_topics = _get_subscriber_info(node=node, node_name=node_name)
                 if subscribe_topics:
                     self.add_permission(
                         profile, 'topic', 'subscribe', 'ALLOW', subscribe_topics, node_name)
-                publish_topics = get_publisher_info(node=node, node_name=node_name)
+                publish_topics = _get_publisher_info(node=node, node_name=node_name)
                 if publish_topics:
                     self.add_permission(
                         profile, 'topic', 'publish', 'ALLOW', publish_topics, node_name)
-                reply_services = get_service_info(node=node, node_name=node_name)
+                reply_services = _get_service_info(node=node, node_name=node_name)
                 if reply_services:
                     self.add_permission(
                         profile, 'service', 'reply', 'ALLOW', reply_services, node_name)
-                request_services = get_client_info(node=node, node_name=node_name)
+                request_services = _get_client_info(node=node, node_name=node_name)
                 if request_services:
                     self.add_permission(
                         profile, 'service', 'request', 'ALLOW', request_services, node_name)
@@ -147,3 +143,44 @@ class GeneratePolicyVerb(VerbExtension):
         with open(args.POLICY_FILE_PATH, 'w') as stream:
             dump_policy(policy, stream)
         return 0
+
+
+def _get_node_names(*, node, include_hidden_nodes=False):
+    node_names_and_namespaces_with_enclaves = node.get_node_names_and_namespaces_with_enclaves()
+    return [
+        _NodeName(
+            node=t[0],
+            ns=t[1],
+            fqn=t[1] + ('' if t[1].endswith('/') else '/') + t[0],
+            path=t[2])
+        for t in node_names_and_namespaces_with_enclaves
+        if (
+            include_hidden_nodes or
+            (t[0] and not t[0].startswith(_HIDDEN_NODE_PREFIX))
+        )
+    ]
+
+
+def _get_topics(node_name, func):
+    names_and_types = func(node_name.node, node_name.ns)
+    return [
+        _TopicInfo(
+            fqn=t[0],
+            type=t[1])
+        for t in names_and_types]
+
+
+def _get_subscriber_info(node, node_name):
+    return _get_topics(node_name, node.get_subscriber_names_and_types_by_node)
+
+
+def _get_publisher_info(node, node_name):
+    return _get_topics(node_name, node.get_publisher_names_and_types_by_node)
+
+
+def _get_service_info(node, node_name):
+    return _get_topics(node_name, node.get_service_names_and_types_by_node)
+
+
+def _get_client_info(node, node_name):
+    return _get_topics(node_name, node.get_client_names_and_types_by_node)
