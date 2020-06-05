@@ -9,6 +9,8 @@ on:
 jobs:
   test_latest:
     runs-on: ubuntu-latest
+    # 'osrf/ros2:devel' does *not* include RTI Connext or its' security plugins
+    # the former gets installed via rosdep in 'action-ros-ci' but the latter do *not* get installed
     container: osrf/ros2:devel
     steps:
     - name: Install prerequisites for action-ros-ci and FastRTPS
@@ -23,9 +25,8 @@ jobs:
         package-name: |
           sros2
           sros2_cmake
-        # skipping end-to-end tests for now https://github.com/eProsima/Fast-RTPS/issues/1087
-        #  test_security
-        # extra-cmake-args: '-DSECURITY=ON --no-warn-unused-cli'
+          test_security
+        extra-cmake-args: '-DSECURITY=ON --no-warn-unused-cli'
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1.0.6
       if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
@@ -42,7 +43,9 @@ jobs:
         path: ros_ws/log
   test_nightly:
     runs-on: ubuntu-latest
-    container: osrf/ros2:nightly
+    # 'osrf/ros2:nightly-rmw-nonfree' includes RTI Connext but
+    # does *not* include the security plugins or a license allowing the use of Security
+    container: osrf/ros2:nightly-rmw-nonfree
     steps:
     - uses: actions/checkout@v2
     - name: Installing dependencies
