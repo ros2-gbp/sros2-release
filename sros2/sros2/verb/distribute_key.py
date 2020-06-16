@@ -18,17 +18,19 @@ except ImportError:
     def DirectoriesCompleter():
         return None
 
-from sros2.api import create_keystore
+from sros2.api import distribute_key
 from sros2.verb import VerbExtension
 
 
-class CreateKeystoreVerb(VerbExtension):
-    """Create keystore."""
+class DistributeKeyVerb(VerbExtension):
+    """Distribute key."""
 
     def add_arguments(self, parser, cli_name):
         arg = parser.add_argument('ROOT', help='root path of keystore')
         arg.completer = DirectoriesCompleter()
+        parser.add_argument('TARGET', help='target keystore path')
+        arg.completer = DirectoriesCompleter()
 
     def main(self, *, args):
-        success = create_keystore(args.ROOT)
+        success = distribute_key(args.ROOT, args.TARGET)
         return 0 if success else 1

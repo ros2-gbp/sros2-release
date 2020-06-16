@@ -18,7 +18,7 @@ except ImportError:
     def DirectoriesCompleter():
         return None
 
-from sros2.api import _key
+from sros2.api import create_key
 from sros2.verb import VerbExtension
 
 
@@ -28,8 +28,8 @@ class CreateKeyVerb(VerbExtension):
     def add_arguments(self, parser, cli_name):
         arg = parser.add_argument('ROOT', help='root path of keystore')
         arg.completer = DirectoriesCompleter()
-        parser.add_argument('NAME', help='key name, aka ROS enclave name')
+        parser.add_argument('NAME', help='key name, aka ROS node name')
 
     def main(self, *, args):
-        success = _key.create_key(args.ROOT, args.NAME)
+        success = create_key(args.ROOT, args.NAME)
         return 0 if success else 1

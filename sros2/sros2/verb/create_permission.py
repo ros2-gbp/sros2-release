@@ -23,7 +23,7 @@ except ImportError:
     def FilesCompleter(*, allowednames, directories):
         return None
 
-from sros2.api import _permission
+from sros2.api import create_permission
 from sros2.verb import VerbExtension
 
 
@@ -33,7 +33,7 @@ class CreatePermissionVerb(VerbExtension):
     def add_arguments(self, parser, cli_name):
         arg = parser.add_argument('ROOT', help='root path of keystore')
         arg.completer = DirectoriesCompleter()
-        parser.add_argument('NAME', help='key name, aka ROS enclave name')
+        parser.add_argument('NAME', help='key name, aka ROS node name')
         arg = parser.add_argument(
             'POLICY_FILE_PATH', help='path of the policy xml file')
         arg.completer = FilesCompleter(
@@ -41,7 +41,7 @@ class CreatePermissionVerb(VerbExtension):
 
     def main(self, *, args):
         try:
-            success = _permission.create_permission(args.ROOT, args.NAME, args.POLICY_FILE_PATH)
+            success = create_permission(args.ROOT, args.NAME, args.POLICY_FILE_PATH)
         except FileNotFoundError as e:
             raise RuntimeError(str(e))
         return 0 if success else 1
