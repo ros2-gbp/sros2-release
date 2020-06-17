@@ -1,3 +1,4 @@
+import glob
 import os
 
 from setuptools import find_packages
@@ -18,10 +19,18 @@ extra_files.extend(package_files('sros2/policy/schemas'))
 extra_files.extend(package_files('sros2/policy/templates'))
 
 
+package_name = 'sros2'
+
 setup(
-    name='sros2',
-    version='0.6.2',
+    name=package_name,
+    version='0.7.2',
     packages=find_packages(exclude=['test']),
+    data_files=[
+        ('share/' + package_name, ['package.xml']),
+        ('share/ament_index/resource_index/packages',
+            ['resource/' + package_name]),
+        ('share/sros2/xml_cache', glob.glob('xml_cache/**')),
+    ],
     install_requires=['setuptools'],
     zip_safe=True,
     author='Morgan Quigley',
