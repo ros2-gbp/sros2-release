@@ -1,0 +1,12 @@
+Source: ros-dashing-sros2-cmake
+Section: misc
+Priority: optional
+Maintainer: ROS Security Working Group <ros-security@googlegroups.com>
+Build-Depends: debhelper (>= 9.0.0), ros-dashing-ament-cmake, ros-dashing-ament-cmake-test, ros-dashing-ament-lint-auto, ros-dashing-ament-lint-common, ros-dashing-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-dashing-sros2-cmake
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-dashing-ros2cli, ros-dashing-sros2, ros-dashing-ros-workspace
+Description: CMake macros to configure security for nodes
