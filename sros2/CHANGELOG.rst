@@ -2,64 +2,33 @@
 Changelog for package sros2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.8.2 (2020-06-16)
+0.7.2 (2020-06-17)
 ------------------
-* bump setup.py package version
-* Merge pull request `#222 <https://github.com/ros2/sros2/issues/222>`_ from mikaelarguedas/eloquent_backports
-  Eloquent backports
+* bump package version in setup.py
+* Merge pull request `#223 <https://github.com/ros2/sros2/issues/223>`_ from mikaelarguedas/dashing_backports
+  Dashing backports
+* Update maintainer to point to ros-security mailing list + fix package.xml (`#179 <https://github.com/ros2/sros2/issues/179>`_)
 * Fix list_keys verb
   backport and adaptation of https://github.com/ros2/sros2/pull/219 to eloquent
-* Update maintainer to point to ros-security mailing list + fix package.xml (`#179 <https://github.com/ros2/sros2/issues/179>`_)
-* Update tutorials for Eloquent-style ros arguments. (`#170  <https://github.com/ros2/sros2/issues/170>`_)
-* Contributors: Mikael Arguedas
+* Fix test_policy_to_permissions test failing when there's no internet (`#158 <https://github.com/ros2/sros2/issues/158>`_) (`#161 <https://github.com/ros2/sros2/issues/161>`_)
+* Fix missing resources for ament (`#162 <https://github.com/ros2/sros2/issues/162>`_)
+* Contributors: Mikael Arguedas, Peter Baughman
 
-0.8.1 (2019-11-13)
+0.7.1 (2019-06-12)
 ------------------
-* add profile for lifecycle nodes (`#146 <https://github.com/ros2/sros2/issues/146>`_)
-* Cleanup changelog
-* Update version in setup.py
-* Contributors: Jacob Perron, Mikael Arguedas
-
-0.8.0 (2019-09-26)
-------------------
-* Install an XML catalog so we can look this schema up locally (`#158 <https://github.com/ros2/sros2/issues/158>`_)
-  Fixes a failure in test_policy_to_permissions when there's no internet.
-* Fix missing resources needed for ament (`#160 <https://github.com/ros2/sros2/issues/160>`_)
-* Install package manifest (`#159 <https://github.com/ros2/sros2/issues/159>`_)
-* Disable flaky test (`#155 <https://github.com/ros2/sros2/issues/155>`_)
-* Add mypy tests to check static typing (`#154 <https://github.com/ros2/sros2/issues/154>`_)
-* Topics starting with tilde need a slash right after (`#152 <https://github.com/ros2/sros2/issues/152>`_)
-* Update message content to match create_key message
-* Create key and cert only once in generate_artifacts
-* Fix certificate start date to work regardless of the timezone (`#148 <https://github.com/ros2/sros2/issues/148>`_)
-* Use older pytest compatible with Ubuntu Bionic (`#145 <https://github.com/ros2/sros2/issues/145>`_)
-* Add request service permissions in generated policies  (`#141 <https://github.com/ros2/sros2/issues/141>`_)
-* Replace openssl subprocess calls with Python cryptography library
-    * Remove use of subprocess for creating ca key and cert (`#126 <https://github.com/ros2/sros2/issues/126>`_)
-    * Obtain S/MIME signature using cryptography library (`#129 <https://github.com/ros2/sros2/issues/129>`_)
-    * Migrate permissions S/MIME to cryptography library (`#136 <https://github.com/ros2/sros2/issues/136>`_)
-    * Migrate create_key to cryptography library (`#138 <https://github.com/ros2/sros2/issues/138>`_)
-    * Remove now obsolete openssl dependency (`#140 <https://github.com/ros2/sros2/issues/140>`_)
-* Factor out the hardcoded name 'sros2testCA' into a constant DEFAULT_COMMON_NAME (`#134 <https://github.com/ros2/sros2/issues/134>`_)
-* Improve create_key tests (`#132 <https://github.com/ros2/sros2/issues/132>`_)
-* Add test for create_key verb (`#125 <https://github.com/ros2/sros2/issues/125>`_)
-* Add basic create_keystore test. (`#124 <https://github.com/ros2/sros2/issues/124>`_)
-* Add tests for list_keys verb (`#123 <https://github.com/ros2/sros2/issues/123>`_)
-* Add tests for generate_policy verb (`#122 <https://github.com/ros2/sros2/issues/122>`_)
 * Guard against empty ROS graph when generating policy (`#118 <https://github.com/ros2/sros2/issues/118>`_)
 * Guard against invalid key names (`#117 <https://github.com/ros2/sros2/issues/117>`_)
-  In particular, guard against keys that only consist of whitespace and '/' characters.
-* Contributors: Emerson Knapp, Jacob Perron, Kyle Fazzari, Mikael Arguedas, Peter Baughman, Ruffin, Siddharth Kucheria
+* Contributors: Jacob Perron
 
 0.7.0 (2019-05-08)
 ------------------
-* Add generate_artifacts verb (`#107 <https://github.com/ros2/sros2/issues/107>`_)
+* Merge pull request `#107 <https://github.com/ros2/sros2/issues/107>`_ from mikaelarguedas/autogenerate_artifacts
 * complete xml and not yaml files for create_permission (`#104 <https://github.com/ros2/sros2/issues/104>`_)
 * Fix bug preventing generate_policy verb from working with publishers and services
 * Add missing attributes to test permissions XML file
 * add reference to schema in generated permission files (`#84 <https://github.com/ros2/sros2/issues/84>`_)
 * Correct sros2 cli test folder location (`#83 <https://github.com/ros2/sros2/issues/83>`_)
-* Use XML and XSLT to perform permission transform (`#72 <https://github.com/ros2/sros2/issues/72>`_)
+* Merge pull request `#72 <https://github.com/ros2/sros2/issues/72>`_ from ros2/xml_profile
 * Contributors: Jacob Perron, Michael Carroll, Mikael Arguedas, Ruffin
 
 0.6.2 (2019-02-08)
@@ -73,9 +42,12 @@ Changelog for package sros2
 
 0.6.0 (2018-12-07)
 ------------------
-* Update package maintainer for sros2 (`#70 <https://github.com/ros2/sros2/issues/70>`_)
+* Merge pull request `#70 <https://github.com/ros2/sros2/issues/70>`_ from ros2/update_maintainer
+  Update package maintainer for sros2
+* Update package maintainer for sros2.
 * separating identity and permission CAs (`#67 <https://github.com/ros2/sros2/issues/67>`_)
-* ignore __pycache__ in git
+* ignore __pycache_\_ in git
+  Signed-off-by: William Woodall <william@osrfoundation.org>
 * raise FileNotFoundError if provided permission file doesn't exist (`#64 <https://github.com/ros2/sros2/issues/64>`_)
 * refer to new xsd now that it's available (`#62 <https://github.com/ros2/sros2/issues/62>`_)
 * fixup path of RANDFILE to match rest of tutorial (`#61 <https://github.com/ros2/sros2/issues/61>`_)

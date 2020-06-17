@@ -13,17 +13,17 @@ def package_files(directory):
     return paths
 
 
-extra_files = (
-    package_files('sros2/policy/defaults') +
-    package_files('sros2/policy/schemas') +
-    package_files('sros2/policy/templates')
-)
+extra_files = []
+extra_files.extend(package_files('sros2/policy/defaults'))
+extra_files.extend(package_files('sros2/policy/schemas'))
+extra_files.extend(package_files('sros2/policy/templates'))
+
 
 package_name = 'sros2'
 
 setup(
     name=package_name,
-    version='0.8.2',
+    version='0.7.2',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/' + package_name, ['package.xml']),

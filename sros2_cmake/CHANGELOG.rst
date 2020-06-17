@@ -2,23 +2,17 @@
 Changelog for package sros2_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.8.2 (2020-06-16)
+0.7.2 (2020-06-17)
 ------------------
-* Merge pull request `#222 <https://github.com/ros2/sros2/issues/222>`_ from mikaelarguedas/eloquent_backports
-  Eloquent backports
+* Merge pull request `#223 <https://github.com/ros2/sros2/issues/223>`_ from mikaelarguedas/dashing_backports
+  Dashing backports
 * Update maintainer to point to ros-security mailing list + fix package.xml (`#179 <https://github.com/ros2/sros2/issues/179>`_)
   * update maintainer and fix invalid package.xml
   * use format 3 for consistency and futureproofness
 * Contributors: Mikael Arguedas
 
-0.8.1 (2019-11-13)
+0.7.1 (2019-06-12)
 ------------------
-
-0.8.0 (2019-09-26)
-------------------
-* Fix author, maintainer information in sros2_cmake/package.xml (`#156 <https://github.com/ros2/sros2/issues/156>`_)
-* Display sros2 invocation console output (`#150 <https://github.com/ros2/sros2/issues/150>`_)
-* Contributors: AAlon, Mikael Arguedas
 
 0.7.0 (2019-05-08)
 ------------------

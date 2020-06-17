@@ -32,7 +32,6 @@ from ros2cli.node.direct import DirectNode
 from ros2cli.node.strategy import NodeStrategy
 
 from sros2.api import (
-    get_client_info,
     get_node_names,
     get_publisher_info,
     get_service_info,
@@ -104,7 +103,7 @@ class GeneratePolicyVerb(VerbExtension):
         for expression in expressions:
             permission = etree.Element(permission_type)
             if expression.fqn.startswith(node_name.fqn + '/'):
-                permission.text = '~' + expression.fqn[len(node_name.fqn):]
+                permission.text = '~' + expression.fqn[len(node_name.fqn + '/'):]
             elif expression.fqn.startswith(node_name.ns + '/'):
                 permission.text = expression.fqn[len(node_name.ns + '/'):]
             elif expression.fqn.count('/') == 1 and node_name.ns == '/':
@@ -139,11 +138,6 @@ class GeneratePolicyVerb(VerbExtension):
                 if reply_services:
                     self.add_permission(
                         profile, 'service', 'reply', 'ALLOW', reply_services, node_name)
-                request_services = get_client_info(node=node, node_name=node_name)
-                if request_services:
-                    self.add_permission(
-                        profile, 'service', 'request', 'ALLOW', request_services, node_name)
 
         with open(args.POLICY_FILE_PATH, 'w') as stream:
             dump_policy(policy, stream)
-        return 0

@@ -31,6 +31,9 @@ colcon build --symlink-install --cmake-args -DSECURITY=ON
 Prerequisite: to use DDS-Security with Connext you will need to procure an RTI Licence and install the security plugins (note that you also need to install RTI's version of openssl as 5.3.1 doesnt support openssl 1.1.0 provided in Ubuntu Bionic).
 See [this page](https://index.ros.org/doc/ros2/Installation/Install-Connext-Security-Plugins) for details on installing the security plugins.
 
+Warning: this tutorial is for ROS Bouncy and Connext 5.3.1.
+If you use ROS Ardent or Connext 5.3.0 please refer to the [tutorial from ROS Ardent](https://github.com/ros2/sros2/blob/ardent/SROS2_Linux.md)
+
 The RTI Connext installer allows you to choose where it lands in the filesystem.
 These instructions assume that you have prefixed the RTI paths with `$HOME/rti` so that the latest version will land in `$HOME/rti/rti_connext_dds-5.3.1`.
 Note that the installer is a multi-partprocess.
@@ -119,7 +122,7 @@ However, other nodes will not be able to communicate, e.g. the following invocat
 
 ```bash
 # This will fail because the node name does not have valid keys/certificates
-ros2 run demo_nodes_cpp talker --ros-args -r __node:=not_talker
+ros2 run demo_nodes_cpp talker __node:=not_talker
 ```
 
 
@@ -174,7 +177,6 @@ To do this, we will use the sample policy file provided in `examples/sample_poli
 First, we will copy this sample policy file into our keystore:
 
 ```bash
-cd ~/sros2_demo
 svn checkout https://github.com/ros2/sros2/trunk/sros2/test/policies
 ```
 
@@ -207,5 +209,5 @@ For example, the following attempt for the `listener` node to subscribe to a top
 
 ```bash
 # This will fail because the node is not permitted to subscribe to topics other than chatter.
-ros2 run demo_nodes_py listener --ros-args -r chatter:=not_chatter
+ros2 run demo_nodes_py listener chatter:=not_chatter
 ```
