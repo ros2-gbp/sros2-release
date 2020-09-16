@@ -1,4 +1,4 @@
-# Copyright 2016-2019 Open Source Robotics Foundation, Inc.
+# Copyright 2016-2020 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,31 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-macro(ros2_secure_node)
-  # ros2_secure_node(NODES <node_1> <node_2>...<node_n>)
+macro(sros2_generate_artifacts)
+  # sros2_generate_artifacts(ENCLAVES <enclave_1> <enclave_1>...<enclave_1>)
   #
-  # NODES (macro multi-arg) takes the node names for which artifacts will be generated
+  # ENCLAVES (macro multi-arg) takes the enclave names for which artifacts will be generated
   # SECURITY (cmake arg) if not defined or OFF, will not generate keystore/keys/permissions
-  # POLICY_FILE (cmake arg) if defined, policies defined in the file will used to generate permission files for all the nodes listed in the policy file
-  # ROS_SECURITY_ROOT_DIRECTORY (env variable) will be the location of the keystore
+  # POLICY_FILE (cmake arg) if defined, policies defined in the file will used to generate
+  #   permission files for all the enclaves listed in the policy file.
+  # ROS_SECURITY_KEYSTORE (env variable) will be the location of the keystore
   if(NOT SECURITY)
     message(STATUS "Not generating security files")
     return()
   endif()
   find_program(PROGRAM ros2)
 
-  if(DEFINED ENV{ROS_SECURITY_ROOT_DIRECTORY})
-    set(SECURITY_KEYSTORE $ENV{ROS_SECURITY_ROOT_DIRECTORY})
+  if(DEFINED ENV{ROS_SECURITY_KEYSTORE})
+    set(SECURITY_KEYSTORE $ENV{ROS_SECURITY_KEYSTORE})
   else()
     set(SECURITY_KEYSTORE ${DEFAULT_KEYSTORE})
   endif()
-  cmake_parse_arguments(ros2_secure_node "" "" "NODES" ${ARGN})
+  cmake_parse_arguments(ros2_generate_security_artifacts "" "" "ENCLAVES" ${ARGN})
   set(generate_artifacts_command ${PROGRAM} security generate_artifacts -k ${SECURITY_KEYSTORE})
-  list(LENGTH ros2_secure_node_NODES nb_nodes)
-  if(${nb_nodes} GREATER "0")
-    list(APPEND generate_artifacts_command "-n")
-    foreach(node ${ros2_secure_node_NODES})
-        list(APPEND generate_artifacts_command ${node})
+  list(LENGTH ros2_generate_security_artifacts_ENCLAVES nb_enclaves)
+  if(${nb_enclaves} GREATER "0")
+    list(APPEND generate_artifacts_command "-e")
+    foreach(enclave ${ros2_generate_security_artifacts_ENCLAVES})
+        list(APPEND generate_artifacts_command enclave)
     endforeach()
   endif()
   if(POLICY_FILE)
@@ -51,13 +52,11 @@ macro(ros2_secure_node)
   message(STATUS "Executing: ${generate_artifacts_command}")
   execute_process(
     COMMAND ${generate_artifacts_command}
-    RESULT_VARIABLE POLICY_RESULT
-    ERROR_VARIABLE POLICY_ERROR
-    OUTPUT_QUIET
+    RESULT_VARIABLE GENERATE_ARTIFACTS_RESULT
+    ERROR_VARIABLE GENERATE_ARTIFACTS_ERROR
   )
-  if(NOT ${POLICY_RESULT} EQUAL 0)
-    message("Failed to generate security artifacts")
-    message("${POLICY_ERROR}")
+  if(NOT ${GENERATE_ARTIFACTS_RESULT} EQUAL 0)
+    message(WARNING "Failed to generate security artifacts: ${GENERATE_ARTIFACTS_ERROR}")
   else()
     message(STATUS "artifacts generated successfully")
   endif()

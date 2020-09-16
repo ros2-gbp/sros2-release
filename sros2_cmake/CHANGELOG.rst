@@ -2,17 +2,32 @@
 Changelog for package sros2_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.7.2 (2020-06-17)
+0.9.3 (2020-09-16)
 ------------------
-* Merge pull request `#223 <https://github.com/ros2/sros2/issues/223>`_ from mikaelarguedas/dashing_backports
-  Dashing backports
-* Update maintainer to point to ros-security mailing list + fix package.xml (`#179 <https://github.com/ros2/sros2/issues/179>`_)
-  * update maintainer and fix invalid package.xml
-  * use format 3 for consistency and futureproofness
-* Contributors: Mikael Arguedas
 
-0.7.1 (2019-06-12)
+0.9.2 (2020-06-06)
 ------------------
+
+0.9.1 (2020-05-11)
+------------------
+
+0.9.0 (2020-05-06)
+------------------
+* Rename keystore root env from ROS_SECURITY_ROOT_DIRECTORY to ROS_SECURITY_KEYSTORE (`#200 <https://github.com/ros2/sros2/issues/200>`_)
+* Security enclaves:
+  * security-context -> enclave (`#198 <https://github.com/ros2/sros2/issues/198>`_)
+  * Update sros2_cmake to use security contexts (`#177 <https://github.com/ros2/sros2/issues/177>`_)
+* Update maintainer to point to ros-security mailing list + fix package.xml (`#179 <https://github.com/ros2/sros2/issues/179>`_)
+* Contributors: Ivan Santiago Paunovic, Mikael Arguedas, Ruffin
+
+0.8.1 (2019-11-13)
+------------------
+
+0.8.0 (2019-09-26)
+------------------
+* Fix author, maintainer information in sros2_cmake/package.xml (`#156 <https://github.com/ros2/sros2/issues/156>`_)
+* Display sros2 invocation console output (`#150 <https://github.com/ros2/sros2/issues/150>`_)
+* Contributors: AAlon, Mikael Arguedas
 
 0.7.0 (2019-05-08)
 ------------------

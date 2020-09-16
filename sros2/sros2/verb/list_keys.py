@@ -18,7 +18,9 @@ except ImportError:
     def DirectoriesCompleter():
         return None
 
-from sros2.api import list_keys
+import sys
+
+from sros2.api import _key
 from sros2.verb import VerbExtension
 
 
@@ -30,5 +32,9 @@ class ListKeysVerb(VerbExtension):
         arg.completer = DirectoriesCompleter()
 
     def main(self, *, args):
-        success = list_keys(args.ROOT)
-        return 0 if success else 1
+        try:
+            if _key.list_keys(args.ROOT):
+                return 0
+        except FileNotFoundError as e:
+            print('No such file or directory: {!r}'.format(e.filename), file=sys.stderr)
+        return 1

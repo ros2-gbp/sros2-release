@@ -13,17 +13,17 @@ def package_files(directory):
     return paths
 
 
-extra_files = []
-extra_files.extend(package_files('sros2/policy/defaults'))
-extra_files.extend(package_files('sros2/policy/schemas'))
-extra_files.extend(package_files('sros2/policy/templates'))
-
+extra_files = (
+    package_files('sros2/policy/defaults') +
+    package_files('sros2/policy/schemas') +
+    package_files('sros2/policy/templates')
+)
 
 package_name = 'sros2'
 
 setup(
     name=package_name,
-    version='0.7.2',
+    version='0.9.3',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/' + package_name, ['package.xml']),
@@ -47,7 +47,7 @@ setup(
     ],
     description='SROS2 provides tools to help manage security keys.',
     long_description="""\
-SROS2 provides command-line tools to help generate and distribute keys and \
+SROS2 provides command-line tools to help generate keys and \
 certificates which are then used by supported middleware implementations to \
 enhance the security of ROS 2 deployments.""",
     license='Apache License, Version 2.0',
@@ -64,7 +64,6 @@ enhance the security of ROS 2 deployments.""",
             'create_keystore = sros2.verb.create_keystore:CreateKeystoreVerb',
             'create_permission = sros2.verb.create_permission'
             ':CreatePermissionVerb',
-            'distribute_key = sros2.verb.distribute_key:DistributeKeyVerb',
             'generate_artifacts = sros2.verb.generate_artifacts:GenerateArtifactsVerb',
             'generate_policy = sros2.verb.generate_policy:GeneratePolicyVerb',
             'list_keys = sros2.verb.list_keys:ListKeysVerb',

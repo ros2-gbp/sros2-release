@@ -1,19 +1,21 @@
 # Security Helper
-Add node authentication, cryptography, and access control security keys using a cmake macro.
-The macro will generate the secure root directory if it does not exists, then create authentication and cryptography keys in the secure root directory.
+Add authentication, cryptography, and access control security keys using a cmake macro.
+The macro will generate the secure root directory if it does not exists, then create authentication and cryptography keys.
 
 In package.xml add:  
 `<depend>sros2_cmake</depend>`  
 In CMakeLists add:  
 `find_package(sros2_cmake REQUIRED)`  
-`ros2_secure_node(NODES <node_name>)`  
+`sros2_generate_artifacts(ENCLAVES <enclave_name>)`  
 
 Macro definition:  
 ```
-    # ros2_secure_node(NODES <node_1> <node_2>...<node_n>)
+    # sros2_generate_artifacts(ENCLAVES <enclave_1> <enclave_2>...<enclave_n>)
 
-    # NODES (macro multi-arg) takes the node names for which keys will be generated
+    # ENCLAVES (macro multi-arg) takes the enclaves names for which keys will be generated
+    #   Executables can use a different or the same enclaves.
+    #   All nodes in the same process use the same enclave.
     # SECURITY (cmake arg) if not define or OFF, will not generate key/keystores
-    # ROS_SECURITY_ROOT_DIRECTORY (env variable) the location of the keystore
-    # POLICY_FILE (cmake arg) if defined, will compile policies by node name into the access private certificates (e.g POLICY_FILE=/etc/policies/<policy.xml>, Generate: <node_name> /etc/policies/<policy.xml>) **if defined, all nodes must have a policy defined for them**
+    # ROS_SECURITY_KEYSTORE (env variable) the location of the keystore
+    # POLICY_FILE (cmake arg) if defined, will generate security artifacts for each enclave defined in the policy file.
 ```
