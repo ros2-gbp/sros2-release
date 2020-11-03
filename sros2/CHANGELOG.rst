@@ -2,13 +2,16 @@
 Changelog for package sros2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.9.3 (2020-09-16)
-------------------
-* add cyclonedds to the list of rmw using graph info topics (#231) (#238)
-  Signed-off-by: Mikael Arguedas <mikael.arguedas@gmail.com>
-* Add scope parameter (backport to Foxy) (#232)
-  Signed-off-by: Jose Luis Rivero <jrivero@osrfoundation.org>
-* Contributors: Jose Luis Rivero, Mikael Arguedas
+0.10.0 (2020-11-03)
+-------------------
+* Expose keystore operations in public API (`#241 <https://github.com/ros2/sros2/issues/241>`_)
+* add cyclonedds to the list of rmw using graph info topics (`#231 <https://github.com/ros2/sros2/issues/231>`_)
+* Add scope parameter (`#230 <https://github.com/ros2/sros2/issues/230>`_)
+* Fix name of argument passed to NodeStrategy (`#227 <https://github.com/ros2/sros2/issues/227>`_)
+* Remove the use of pkg_resources. (`#225 <https://github.com/ros2/sros2/issues/225>`_)
+* Make use of ros_testing to test policy generation. (`#214 <https://github.com/ros2/sros2/issues/214>`_)
+* Add pytest.ini so local tests don't display warning (`#224 <https://github.com/ros2/sros2/issues/224>`_)
+* Contributors: Chris Lalancette, Jacob Perron, Jose Luis Rivero, Kyle Fazzari, Michel Hidalgo, Mikael Arguedas
 
 0.9.2 (2020-06-06)
 ------------------
