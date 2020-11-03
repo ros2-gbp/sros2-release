@@ -23,7 +23,7 @@ package_name = 'sros2'
 
 setup(
     name=package_name,
-    version='0.9.3',
+    version='0.9.1',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/' + package_name, ['package.xml']),
@@ -60,13 +60,17 @@ enhance the security of ROS 2 deployments.""",
             'sros2.verb = sros2.verb:VerbExtension',
         ],
         'sros2.verb': [
-            'create_key = sros2.verb.create_key:CreateKeyVerb',
+            # These are deprecated
+            'create_key = sros2.verb.create_enclave:CreateKeyVerb',
+            'list_keys = sros2.verb.list_enclaves:ListKeysVerb',
+
+            'create_enclave = sros2.verb.create_enclave:CreateEnclaveVerb',
             'create_keystore = sros2.verb.create_keystore:CreateKeystoreVerb',
             'create_permission = sros2.verb.create_permission'
             ':CreatePermissionVerb',
             'generate_artifacts = sros2.verb.generate_artifacts:GenerateArtifactsVerb',
             'generate_policy = sros2.verb.generate_policy:GeneratePolicyVerb',
-            'list_keys = sros2.verb.list_keys:ListKeysVerb',
+            'list_enclaves = sros2.verb.list_enclaves:ListEnclavesVerb',
         ],
     },
     package_data={
