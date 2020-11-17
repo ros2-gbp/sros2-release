@@ -22,14 +22,12 @@ from cryptography.hazmat.primitives.serialization import load_pem_private_key
 import pytest
 
 from ros2cli import cli
-
-from sros2 import _utilities
-from sros2.keystore import _keystore
+from sros2.api import _keystore, _utilities
 
 
 # This fixture will run once for the entire module (as opposed to once per test)
 @pytest.fixture(scope='module')
-def keystore_dir(tmpdir_factory) -> Path:
+def keystore_dir(tmpdir_factory):
     keystore_dir = str(tmpdir_factory.mktemp('keystore'))
 
     # Create the keystore

@@ -12,37 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pathlib
-from typing import List
-
-from sros2 import _utilities, keystore
 from sros2.policy import load_policy
 
-from . import _policy
+from . import _key, _keystore, _permission, _policy, _utilities
 
 
-def generate_artifacts(
-        keystore_path: pathlib.Path = None,
-        identity_names: List[str] = [],
-        policy_files: List[pathlib.Path] = []) -> None:
+def generate_artifacts(keystore_path=None, identity_names=[], policy_files=[]):
     if keystore_path is None:
         keystore_path = _utilities.get_keystore_path_from_env()
         if keystore_path is None:
             return False
-    if not keystore.is_valid_keystore(keystore_path):
+    if not _keystore.is_valid_keystore(keystore_path):
         print('%s is not a valid keystore, creating new keystore' % keystore_path)
-        keystore.create_keystore(keystore_path)
+        _keystore.create_keystore(keystore_path)
 
-    # Create enclaves for all provided identities
+    # create keys for all provided identities
     for identity in identity_names:
-        keystore.create_enclave(keystore_path, identity)
+        if not _key.create_key(keystore_path, identity):
+            return False
     for policy_file in policy_files:
         policy_tree = load_policy(policy_file)
         enclaves_element = policy_tree.find('enclaves')
         for enclave in enclaves_element:
             identity_name = enclave.get('path')
             if identity_name not in identity_names:
-                keystore.create_enclave(keystore_path, identity_name)
+                if not _key.create_key(keystore_path, identity_name):
+                    return False
             policy_element = _policy.get_policy_from_tree(identity_name, policy_tree)
-            keystore._permission.create_permissions_from_policy_element(
+            _permission.create_permissions_from_policy_element(
                 keystore_path, identity_name, policy_element)
+    return True

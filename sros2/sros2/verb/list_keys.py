@@ -18,17 +18,23 @@ except ImportError:
     def DirectoriesCompleter():
         return None
 
-from sros2.api import _keystore
+import sys
+
+from sros2.api import _key
 from sros2.verb import VerbExtension
 
 
-class CreateKeystoreVerb(VerbExtension):
-    """Create keystore."""
+class ListKeysVerb(VerbExtension):
+    """List keys."""
 
     def add_arguments(self, parser, cli_name):
         arg = parser.add_argument('ROOT', help='root path of keystore')
         arg.completer = DirectoriesCompleter()
 
     def main(self, *, args):
-        success = _keystore.create_keystore(args.ROOT)
-        return 0 if success else 1
+        try:
+            if _key.list_keys(args.ROOT):
+                return 0
+        except FileNotFoundError as e:
+            print('No such file or directory: {!r}'.format(e.filename), file=sys.stderr)
+        return 1
