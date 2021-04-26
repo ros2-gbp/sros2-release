@@ -137,7 +137,7 @@ tracks:
       :{release_inc} --os-name rhel
     devel_branch: foxy
     last_version: 0.9.4
-    name: upstream
+    name: sros2
     patches: null
     release_inc: '1'
     release_repo_url: null
@@ -163,7 +163,7 @@ tracks:
       :{release_inc} --os-name rhel
     devel_branch: master
     last_version: 0.10.2
-    name: upstream
+    name: sros2
     patches: null
     release_inc: '2'
     release_repo_url: null
@@ -237,7 +237,7 @@ tracks:
       :{release_inc} --os-name rhel
     devel_branch: master
     last_version: 0.10.2
-    name: upstream
+    name: sros2
     patches: null
     release_inc: '1'
     release_repo_url: null
