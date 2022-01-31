@@ -4,9 +4,9 @@
 
 ### Install from debian packages
 
-First install ROS2 from binaries following [these instructions](https://docs.ros.org/en/rolling/Installation/Ubuntu-Install-Debians.html).
+First install ROS2 from binaries following [these instructions](https://index.ros.org/doc/ros2/Installation/Linux-Install-Debians)
 
-Setup your environment following [these instructions](https://docs.ros.org/en/rolling/Installation/Ubuntu-Install-Debians.html#environment-setup).
+Setup your environment following [these instructions](https://index.ros.org/doc/ros2/Installation/Linux-Install-Debians#environment-setup)
 
 In the rest of these instruction we assume that every terminal setup the environment as instructed above.
 
@@ -19,7 +19,7 @@ You will need to have openssl installed on your machine:
 sudo apt update && sudo apt install libssl-dev
 ```
 
-First install ROS2 from source following [these instructions](https://docs.ros.org/en/rolling/Installation/Ubuntu-Development-Setup.html).
+First install ROS2 from source following [these instructions](https://index.ros.org/doc/ros2/Installation/Linux-Development-Setup/)
 
 Note: Fast-RTPS requires an additional CMake flag to build the security plugins so the colcon invocation needs to be modified to pass:
 ```bash
@@ -28,8 +28,8 @@ colcon build --symlink-install --cmake-args -DSECURITY=ON
 
 ### Additional configuration for RTI Connext
 
-Prerequisite: to use DDS-Security with Connext you will need to procure an RTI Licence and install the security plugins (note that you also need to install RTI's version of openssl as 5.3.1 doesn't support openssl 1.1.0 provided in Ubuntu Bionic).
-See [this page](https://docs.ros.org/en/rolling/Installation/DDS-Implementations/Install-Connext-Security-Plugins.html) for details on installing the security plugins.
+Prerequisite: to use DDS-Security with Connext you will need to procure an RTI Licence and install the security plugins (note that you also need to install RTI's version of openssl as 5.3.1 doesnt support openssl 1.1.0 provided in Ubuntu Bionic).
+See [this page](https://index.ros.org/doc/ros2/Installation/Install-Connext-Security-Plugins) for details on installing the security plugins.
 
 The RTI Connext installer allows you to choose where it lands in the filesystem.
 These instructions assume that you have prefixed the RTI paths with `$HOME/rti` so that the latest version will land in `$HOME/rti/rti_connext_dds-5.3.1`.
@@ -63,20 +63,20 @@ mkdir ~/sros2_demo
 
 ```bash
 cd ~/sros2_demo
-ros2 security create_keystore demo_keystore
+ros2 security create_keystore demo_keys
 ```
 
 #### Generate keys and certificates for the talker and listener nodes
 
 ```bash
-ros2 security create_enclave demo_keystore /talker_listener/talker
-ros2 security create_enclave demo_keystore /talker_listener/listener
+ros2 security create_key demo_keys /talker_listener/talker
+ros2 security create_key demo_keys /talker_listener/listener
 ```
 
 ### Define the SROS2 environment variables
 
 ```bash
-export ROS_SECURITY_KEYSTORE=~/sros2_demo/demo_keystore
+export ROS_SECURITY_KEYSTORE=~/sros2_demo/demo_keys
 export ROS_SECURITY_ENABLE=true
 export ROS_SECURITY_STRATEGY=Enforce
 ```
@@ -85,14 +85,14 @@ These variables need to be defined in each terminal used for the demo. For conve
 
 ### Run the demo
 
-ROS2 allows you to [change DDS implementation at runtime](https://docs.ros.org/en/rolling/Guides/Working-with-multiple-RMW-implementations.html).
+ROS2 allows you to [change DDS implementation at runtime](https://index.ros.org/doc/ros2/Tutorials/Working-with-multiple-RMW-implementations).
 This demo can be run with fastrtps by setting:
 ```bash
 export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 ```
 And with Connext by setting:
 ```bash
-export RMW_IMPLEMENTATION=rmw_connextdds
+export RMW_IMPLEMENTATION=rmw_connext_cpp
 ```
 
 Note that secure communication between vendors is not supported.
@@ -130,15 +130,15 @@ First, we'll create an empty keystore on `oldschool`, which is just an empty dir
 
 ```
 ssh oldschool.local
-mkdir -p ~/sros2_demo/demo_keystore
+mkdir -p ~/sros2_demo/demo_keys
 exit
 ```
 
 Now, we'll copy the keys/certificates for the "talker" program from `feather2` to `oldschool`:
 
 ```
-cd ~/sros2_demo/demo_keystore
-scp -r talker USERNAME@oldschool.local:~/sros2_demo/demo_keystore
+cd ~/sros2_demo/demo_keys
+scp -r talker USERNAME@oldschool.local:~/sros2_demo/demo_keys
 ```
 
 That will be very quick, since it's just copying some very small text files.
@@ -176,8 +176,8 @@ svn checkout https://github.com/ros2/sros2/trunk/sros2/test/policies
 And now we will use it to generate the XML permission files expected by the middleware:
 
 ```bash
-ros2 security create_permission demo_keystore /talker_listener/talker policies/sample.policy.xml
-ros2 security create_permission demo_keystore /talker_listener/listener policies/sample.policy.xml
+ros2 security create_permission demo_keys /talker_listener/talker policies/sample.policy.xml
+ros2 security create_permission demo_keys /talker_listener/listener policies/sample.policy.xml
 ```
 
 These permission files will be stricter than the ones that were used in the previous demo: the nodes will only be allowed to publish or subscribe to the `chatter` topic (and some other topics used for parameters).
@@ -204,62 +204,3 @@ For example, the following attempt for the `listener` node to subscribe to a top
 # This will fail because the node is not permitted to subscribe to topics other than chatter.
 ros2 run demo_nodes_py listener --ros-args -r chatter:=not_chatter -e /talker_listener/listener
 ```
-
-### Certificate Revocation Lists
-
-In some circumstances, it may be necessary to revoke certificates before they have expired.
-This is accomplished with Certificate Revocation Lists (CRLs), and is supported by SROS2 security enclaves.
-
-Following on from the previous demo, let's assume that we want to revoke the certificate for the listener.
-To do this, we first need to generate a crl.pem file in the security enclave:
-
-```bash
-cd ~/sros2_demo/demo_keystore
-cat > crl_openssl.conf << EOF
-# OpenSSL configuration for CRL generation
-
-[ ca ]
-default_ca = CA_default
-
-[ CA_default ]
-database = index.txt
-crlnumber = crlnumber
-
-default_days = 365  # how long to certify for
-default_crl_days = 30  # how long before next CRL
-default_md = default  # use public key default MD
-preserve = no  # keep passed DN ordering
-
-[ crl_ext ]
-# CRL extensions.
-# Only issuerAltName and authorityKeyIdentifier make any sense in a CRL.
-# issuerAltName=issuer:copy
-authorityKeyIdentifier = keyid:always,issuer:always
-EOF
-echo 00 > crlnumber
-touch index.txt
-openssl ca -revoke enclaves/talker_listener/listener/cert.pem -keyfile private/identity_ca.key.pem -cert public/identity_ca.cert.pem -config crl_openssl.conf
-openssl ca -gencrl -keyfile private/identity_ca.key.pem -cert public/identity_ca.cert.pem -out public/crl.pem -config crl_openssl.conf
-```
-
-Now we need to link it into the talker enclave (so it will reject connection attempts by the listener):
-
-```bash
-ln -s ../../../public/crl.pem enclaves/talker_listener/talker
-```
-
-Now we can run the talker demo as above (after preparing the terminal as previously described):
-```bash
-ros2 run demo_nodes_cpp talker --ros-args --enclave /talker_listener/talker
-```
-
-You'll notice that this is operating just like before.
-
-In another terminal (after preparing the terminal as previously described), we will do the same thing with the `listener` program.
-
-```bash
-ros2 run demo_nodes_py listener --ros-args --enclave /talker_listener/listener
-```
-
-Here you'll notice that the listener is not getting any data.
-That's because the talker is explicitly rejecting the listener revoked certificate of the listener, so no communication is possible.

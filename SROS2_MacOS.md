@@ -18,7 +18,7 @@ For convenience you can add this export to your bash_profile.
 
 ### Install from binaries
 
-First install ROS2 from binaries following [these instructions](https://docs.ros.org/en/rolling/Installation/macOS-Install-Binary.html).
+First install ROS2 from binaries following [these instructions](https://index.ros.org/doc/ros2/Installation/OSX-Install-Binary)
 
 
 Setup your environment:
@@ -37,7 +37,7 @@ export OPENSSL_ROOT_DIR=`brew --prefix openssl`
 ```
 For convenience you can add this export to your bash_profile.
 
-Install ROS2 from source following [these instructions](https://docs.ros.org/en/rolling/Installation/macOS-Development-Setup.html).
+Install ROS2 from source following [these instructions](https://index.ros.org/doc/ros2/Installation/OSX-Development-Setup)
 
 Note: Fast-RTPS requires an additional CMake flag to build the security plugins so the colcon invocation needs to be modified to pass:
 ```bash
@@ -54,7 +54,7 @@ In the rest of these instructions we assume that every terminal setup the enviro
 ### Additional configuration for RTI Connext
 
 To use DDS-Security with Connext you will need to procure an RTI Licence and install the security plugin.
-See [this page](https://docs.ros.org/en/rolling/Installation/DDS-Implementations/Install-Connext-Security-Plugins.html) for details on installing the security plugins.
+See [this page](https://index.ros.org/doc/ros2/Installation/Install-Connext-Security-Plugins) for details on installing the security plugins.
 
 ## Preparing the environment for the demo
 
@@ -72,20 +72,20 @@ mkdir ~/sros2_demo
 
 ```bash
 cd ~/sros2_demo
-ros2 security create_keystore demo_keystore
+ros2 security create_keystore demo_keys
 ```
 
 #### Generate keys and certificates for the talker and listener nodes
 
 ```bash
-ros2 security create_enclave demo_keystore /talker_listener/talker
-ros2 security create_enclave demo_keystore /talker_listener/listener
+ros2 security create_key demo_keys /talker_listener/talker
+ros2 security create_key demo_keys /talker_listener/listener
 ```
 
 ### Define the SROS2 environment variables
 
 ```bash
-export ROS_SECURITY_KEYSTORE=$(pwd)/demo_keystore
+export ROS_SECURITY_KEYSTORE=$(pwd)/demo_keys
 export ROS_SECURITY_ENABLE=true
 export ROS_SECURITY_STRATEGY=Enforce
 ```
@@ -94,14 +94,14 @@ These variables need to be defined in each terminal used for the demo. For conve
 
 ## Run the demo
 
-ROS2 allows you to [change DDS implementation at runtime](https://docs.ros.org/en/rolling/Guides/Working-with-multiple-RMW-implementations.html).
+ROS2 allows you to [change DDS implementation at runtime](https://index.ros.org/doc/ros2/Tutorials/Working-with-multiple-RMW-implementations).
 This demo can be run with fastrtps by setting:
 ```bash
 export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 ```
 And with Connext by setting:
 ```bash
-export RMW_IMPLEMENTATION=rmw_connextdds
+export RMW_IMPLEMENTATION=rmw_connext_cpp
 ```
 
 Note that secure communication between vendors is not supported.
@@ -143,8 +143,8 @@ svn checkout https://github.com/ros2/sros2/trunk/sros2/test/policies
 And now we will use it to generate the XML permission files expected by the middleware:
 
 ```bash
-ros2 security create_permission demo_keystore /talker_listener/talker policies/sample.policy.xml
-ros2 security create_permission demo_keystore /talker_listener/listener policies/sample.policy.xml
+ros2 security create_permission demo_keys /talker_listener/talker policies/sample.policy.xml
+ros2 security create_permission demo_keys /talker_listener/listener policies/sample.policy.xml
 ```
 
 These permission files will be stricter than the ones that were used in the previous demo: the nodes will only be allowed to publish or subscribe to the `chatter` topic (and some other topics used for parameters).
