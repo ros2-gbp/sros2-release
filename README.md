@@ -1,3 +1,28 @@
+## sros2 (rolling) - 0.10.4-1
+
+The packages in the `sros2` repository were released into the `rolling` distro by running `/usr/bin/bloom-release --track rolling --rosdistro rolling sros2` on `Fri, 08 Apr 2022 20:47:48 -0000`
+
+These packages were released:
+- `sros2`
+- `sros2_cmake`
+
+Version of package(s) in repository `sros2`:
+
+- upstream repository: https://github.com/ros2/sros2.git
+- release repository: https://github.com/ros2-gbp/sros2-release.git
+- rosdistro version: `0.10.3-2`
+- old version: `0.10.3-2`
+- new version: `0.10.4-1`
+
+Versions of tools used:
+
+- bloom version: `0.10.7`
+- catkin_pkg version: `0.4.24`
+- rosdep version: `0.21.0`
+- rosdistro version: `0.8.3`
+- vcstools version: `0.1.42`
+
+
 ## sros2 (foxy) - 0.9.5-1
 
 The packages in the `sros2` repository were released into the `foxy` distro by running `/usr/bin/bloom-release -r foxy sros2` on `Mon, 31 Jan 2022 22:22:09 -0000`
