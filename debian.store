@@ -1,1 +1,1 @@
-{"base": "c4cd32a", "parent": "debian/rolling/sros2_cmake", "previous": "f5ecfa9", "trim": "", "trimbase": ""}
+{"base": "d4b21ee", "parent": "debian/humble/sros2_cmake", "previous": "10bec7f", "trim": "", "trimbase": ""}
