@@ -191,7 +191,7 @@ tracks:
     last_version: 0.10.4
     name: sros2
     patches: null
-    release_inc: '1'
+    release_inc: '2'
     release_repo_url: null
     release_tag: :{version}
     ros_distro: humble
