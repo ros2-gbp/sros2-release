@@ -2,6 +2,9 @@
 Changelog for package sros2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.14.0 (2024-04-29)
+-------------------
+
 0.13.0 (2024-02-07)
 -------------------
 * Use modern PKCS7 to sign the certificate bytes. (`#290 <https://github.com/ros2/sros2/issues/290>`_)
