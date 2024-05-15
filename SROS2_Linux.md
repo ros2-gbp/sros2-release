@@ -126,17 +126,19 @@ Let's say that the machine with the keystore created in the previous demo has a 
 First, we need to run the installation and compilation steps described previously on the `oldschool` machine.
 Then, we need to copy some keys to `oldschool` to allow SROS 2 to authenticate and encrypt the transmissions.
 Since the keys are just text files, we can use `scp` to copy them.
-First, we'll create an empty keystore on `oldschool` with a `talker_listener` enclave directory:
+First, we'll create an empty keystore on `oldschool`, which is just an empty directory:
 
 ```
-ssh oldschool.local "mkdir -p ~/sros2_demo/demo_keystore/enclaves/talker_listener"
+ssh oldschool.local
+mkdir -p ~/sros2_demo/demo_keystore
+exit
 ```
 
 Now, we'll copy the keys/certificates for the "talker" program from `feather2` to `oldschool`:
 
 ```
-cd ~/sros2_demo/demo_keystore/enclaves/talker_listener
-scp -r talker oldschool.local:~/sros2_demo/demo_keystore/enclaves/talker_listener
+cd ~/sros2_demo/demo_keystore
+scp -r talker USERNAME@oldschool.local:~/sros2_demo/demo_keystore
 ```
 
 That will be very quick, since it's just copying some very small text files.

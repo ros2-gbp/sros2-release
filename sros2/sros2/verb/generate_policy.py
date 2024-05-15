@@ -16,7 +16,16 @@ from collections import namedtuple
 import pathlib
 import sys
 
-from argcomplete.completers import FilesCompleter
+try:
+    from argcomplete.completers import DirectoriesCompleter
+except ImportError:
+    def DirectoriesCompleter():
+        return None
+try:
+    from argcomplete.completers import FilesCompleter
+except ImportError:
+    def FilesCompleter(*, allowednames, directories):
+        return None
 
 from lxml import etree
 
