@@ -2,7 +2,41 @@
 Changelog for package sros2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.10.5 (2024-05-15)
+0.15.0 (2024-06-17)
+-------------------
+* [FIX] remove dangerous mutable default arguments in generate_artifacts (`#318 <https://github.com/ros2/sros2/issues/318>`_)
+* Fix sros2 tests on Windows Debug. (`#317 <https://github.com/ros2/sros2/issues/317>`_)
+* [TESTS] Update tests and add test for generate_artifacts (`#311 <https://github.com/ros2/sros2/issues/311>`_)
+* remove deprecated create_key and list_keys verbs (`#302 <https://github.com/ros2/sros2/issues/302>`_)
+* Fix linux tutorial: cloning example policies and set of default policies for a node (`#295 <https://github.com/ros2/sros2/issues/295>`_)
+* Contributors: Chris Lalancette, Mikael Arguedas
+
+0.14.0 (2024-04-29)
+-------------------
+
+0.13.0 (2024-02-07)
+-------------------
+* Use modern PKCS7 to sign the certificate bytes. (`#290 <https://github.com/ros2/sros2/issues/290>`_)
+* Fix a number of warnings on Ubuntu 24.04. (`#289 <https://github.com/ros2/sros2/issues/289>`_)
+* Contributors: Chris Lalancette
+
+0.12.1 (2023-05-19)
+-------------------
+* Fix SSH commands in SROS2_Linux.md (`#286 <https://github.com/ros2/sros2/issues/286>`_)
+* Contributors: Boris Boutillier
+
+0.12.0 (2023-04-28)
+-------------------
+
+0.11.2 (2023-04-11)
+-------------------
+* Make type of get_package_share_directory apparent for sphinx (`#284 <https://github.com/ros2/sros2/issues/284>`_)
+* Contributors: Yadu
+
+0.11.1 (2022-09-13)
+-------------------
+
+0.11.0 (2022-05-04)
 -------------------
 
 0.10.4 (2022-04-08)
