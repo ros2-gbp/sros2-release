@@ -1,0 +1,12 @@
+Source: ros-jazzy-sros2-cmake
+Section: misc
+Priority: optional
+Maintainer: ROS Security Working Group <ros-security@googlegroups.com>
+Build-Depends: debhelper (>= 9.0.0), ros-jazzy-ament-cmake, ros-jazzy-ament-cmake-test, ros-jazzy-ament-lint-auto <!nocheck>, ros-jazzy-ament-lint-common <!nocheck>, ros-jazzy-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-jazzy-sros2-cmake
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-jazzy-ros2cli, ros-jazzy-sros2, ros-jazzy-ros-workspace
+Description: CMake macros to configure security
