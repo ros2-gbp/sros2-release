@@ -85,13 +85,12 @@ These variables need to be defined in each terminal used for the demo. For conve
 
 ### Run the demo
 
-ROS2 allows you to [change DDS implementation at runtime](https://docs.ros.org/en/rolling/Guides/Working-with-multiple-RMW-implementations.html).
-This demo can be run with fastrtps by setting:
+ROS 2 allows you to [change DDS implementation at runtime](https://docs.ros.org/en/rolling/Guides/Working-with-multiple-RMW-implementations.html).
+This demo can be run with FastDDS / CycloneDDS / ConnextDDS by setting the `RMW_IMPLEMENTATION` variable, e.g.:
+
 ```bash
-export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
-```
-And with Connext by setting:
-```bash
+export RMW_IMPLEMENTATION=rmw_fastrtps_cpp  # or
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp  # or
 export RMW_IMPLEMENTATION=rmw_connextdds
 ```
 
@@ -116,6 +115,41 @@ Note: You can switch between the C++ (demo_nodes_cpp) and Python (demo_nodes_py)
 
 These nodes are able to communicate because we have created the appropriate keys and certificates for them.
 
+To be able to use the ros2 CLI tools to interact with your secured system, you need to provide it with an override enclave:
+```bash
+export ROS_SECURITY_ENCLAVE_OVERRIDE=/talker_listener/listener
+```
+
+Then use the CLI with `--no-daemon` and `--spin-time`:
+
+> [!NOTE]
+> Avoid using `ros2 daemon` since it may not have security enclaves, and enough time duration should be given for the discovery in secured network.
+
+```bash
+ros2 node list --no-daemon --spin-time 4
+```
+```
+/talker
+```
+```bash
+ros2 topic list --no-daemon --spin-time 4
+```
+```
+/chatter
+/parameter_events
+/rosout
+```
+```bash
+ros2 topic echo /chatter --spin-time 4
+```
+```
+[INFO] [1714897092.882384995] [rcl]: Found security directory: /root/sros2_demo/demo_keystore/enclaves/talker_listener/listener
+data: 'Hello World: 257'
+---
+data: 'Hello World: 258'
+---
+
+```
 
 ### Run the demo on different machines
 
@@ -166,16 +200,16 @@ To do this, we will use the sample policy file provided in `examples/sample_poli
 First, we will copy this sample policy file into our keystore:
 
 ```bash
-sudo apt update && sudo apt install subversion
+sudo apt update && sudo apt install git
 cd ~/sros2_demo
-svn checkout https://github.com/ros2/sros2/trunk/sros2/test/policies
+git clone https://github.com/ros2/sros2.git /tmp/sros2
 ```
 
 And now we will use it to generate the XML permission files expected by the middleware:
 
 ```bash
-ros2 security create_permission demo_keystore /talker_listener/talker policies/sample.policy.xml
-ros2 security create_permission demo_keystore /talker_listener/listener policies/sample.policy.xml
+ros2 security create_permission demo_keystore /talker_listener/talker /tmp/sros2/sros2/test/policies/sample.policy.xml
+ros2 security create_permission demo_keystore /talker_listener/listener /tmp/sros2/sros2/test/policies/sample.policy.xml
 ```
 
 These permission files will be stricter than the ones that were used in the previous demo: the nodes will only be allowed to publish or subscribe to the `chatter` topic (and some other topics used for parameters).
