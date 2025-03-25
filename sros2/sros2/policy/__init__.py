@@ -27,39 +27,37 @@ except ModuleNotFoundError:
 POLICY_VERSION = '0.2.0'
 
 
-def _get_path(template, name):
-    if hasattr(importlib_resources, 'files'):
-        return importlib_resources.files(template).joinpath(name)
-    else:
-        with importlib_resources.path(template, name) as path:
-            return path
-
-
 def get_policy_default(name: str) -> pathlib.Path:
-    return _get_path('sros2.policy.defaults', name)
+    with importlib_resources.path('sros2.policy.defaults', name) as path:
+        return path
 
 
 def get_policy_schema(name: str) -> pathlib.Path:
-    return _get_path('sros2.policy.schemas', name)
+    with importlib_resources.path('sros2.policy.schemas', name) as path:
+        return path
 
 
 def get_policy_template(name: str) -> pathlib.Path:
-    return _get_path('sros2.policy.templates', name)
+    with importlib_resources.path('sros2.policy.templates', name) as path:
+        return path
 
 
 def get_transport_default(transport: str, name: str) -> pathlib.Path:
     module = 'sros2.policy.defaults.' + transport
-    return _get_path(module, name)
+    with importlib_resources.path(module, name) as path:
+        return path
 
 
 def get_transport_schema(transport: str, name: str) -> pathlib.Path:
     module = 'sros2.policy.schemas.' + transport
-    return _get_path(module, name)
+    with importlib_resources.path(module, name) as path:
+        return path
 
 
 def get_transport_template(transport: str, name: str) -> pathlib.Path:
     module = 'sros2.policy.templates.' + transport
-    return _get_path(module, name)
+    with importlib_resources.path(module, name) as path:
+        return path
 
 
 def load_policy(policy_file_path: pathlib.Path) -> etree.ElementTree:
