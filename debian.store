@@ -1,1 +1,1 @@
-{"base": "433a4e8", "parent": "debian/rolling/sros2", "previous": "8fd1bbf", "trim": "", "trimbase": ""}
+{"base": "e0bad8790dfe", "parent": "debian/kilted/sros2", "previous": "768c93d1fe79", "trim": "", "trimbase": ""}
