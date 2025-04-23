@@ -2,34 +2,23 @@
 Changelog for package sros2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.13.3 (2025-04-02)
+0.15.1 (2024-07-29)
 -------------------
-* fix github-workflow mypy error. (`#336 <https://github.com/ros2/sros2/issues/336>`_) (`#337 <https://github.com/ros2/sros2/issues/337>`_)
-  (cherry picked from commit 8fd7b70df5d91b19a76a6025cb32e6f44c4d7cdd)
-  Co-authored-by: Tomoya Fujita <Tomoya.Fujita@sony.com>
-* Contributors: mergify[bot]
+* Give more time to generate policies in tests (`#323 <https://github.com/ros2/sros2/issues/323>`_)
+* Switch to context manager for rclpy tests. (`#322 <https://github.com/ros2/sros2/issues/322>`_)
+* Contributors: Alejandro Hernández Cordero, Chris Lalancette
 
-0.13.2 (2024-06-27)
+0.15.0 (2024-06-17)
 -------------------
-* Fix sros2 tests on Windows Debug. (`#317 <https://github.com/ros2/sros2/issues/317>`_) (`#320 <https://github.com/ros2/sros2/issues/320>`_)
-  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-* [TESTS] Update tests and add test for generate_artifacts (`#311 <https://github.com/ros2/sros2/issues/311>`_) (`#319 <https://github.com/ros2/sros2/issues/319>`_)
-  Co-authored-by: Mikael Arguedas <mikael.arguedas@gmail.com>
-* Contributors: mergify[bot]
+* [FIX] remove dangerous mutable default arguments in generate_artifacts (`#318 <https://github.com/ros2/sros2/issues/318>`_)
+* Fix sros2 tests on Windows Debug. (`#317 <https://github.com/ros2/sros2/issues/317>`_)
+* [TESTS] Update tests and add test for generate_artifacts (`#311 <https://github.com/ros2/sros2/issues/311>`_)
+* remove deprecated create_key and list_keys verbs (`#302 <https://github.com/ros2/sros2/issues/302>`_)
+* Fix linux tutorial: cloning example policies and set of default policies for a node (`#295 <https://github.com/ros2/sros2/issues/295>`_)
+* Contributors: Chris Lalancette, Mikael Arguedas
 
-0.13.1 (2024-05-13)
+0.14.0 (2024-04-29)
 -------------------
-* Fix linux tutorial: cloning example policies and set of default policies for a node (`#295 <https://github.com/ros2/sros2/issues/295>`_) (`#296 <https://github.com/ros2/sros2/issues/296>`_)
-  * clone policies to temporary dir as subversion hack doesnt work anymore
-  * add get_type_description service to policies
-  * update MacOS similarly
-  * update all permissions with new topics
-  * dont rule out cycloneDDS
-  * example of enclave override
-  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-  (cherry picked from commit ca6bb12cc650b73e7ccfc0fa789d8b49358d44ad)
-  Co-authored-by: Mikael Arguedas <mikael.arguedas@gmail.com>
-* Contributors: mergify[bot]
 
 0.13.0 (2024-02-07)
 -------------------
