@@ -1,3 +1,28 @@
+## sros2 (kilted) - 0.15.2-1
+
+The packages in the `sros2` repository were released into the `kilted` distro by running `/home/cottsay/infra_ws/install/bloom/bin/bloom-release sros2 -r kilted` on `Fri, 25 Apr 2025 21:19:15 -0000`
+
+These packages were released:
+- `sros2`
+- `sros2_cmake`
+
+Version of package(s) in repository `sros2`:
+
+- upstream repository: https://github.com/ros2/sros2.git
+- release repository: https://github.com/ros2-gbp/sros2-release.git
+- rosdistro version: `0.15.1-2`
+- old version: `0.15.1-2`
+- new version: `0.15.2-1`
+
+Versions of tools used:
+
+- bloom version: `0.12.0`
+- catkin_pkg version: `1.0.0`
+- rosdep version: `0.25.1`
+- rosdistro version: `1.0.1`
+- vcstools version: `0.1.42`
+
+
 ## sros2 (jazzy) - 0.13.3-1
 
 The packages in the `sros2` repository were released into the `jazzy` distro by running `/usr/bin/bloom-release --rosdistro jazzy --track jazzy sros2` on `Wed, 02 Apr 2025 09:15:39 -0000`
