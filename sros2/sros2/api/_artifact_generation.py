@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import pathlib
-from typing import List, Optional
+from typing import List
 
 from sros2 import _utilities, keystore
 from sros2.policy import load_policy
@@ -22,14 +22,13 @@ from . import _policy
 
 
 def generate_artifacts(
-    keystore_path: Optional[pathlib.Path],
-    identity_names: List[str],
-    policy_files: List[pathlib.Path]
-) -> None:
+        keystore_path: pathlib.Path = None,
+        identity_names: List[str] = [],
+        policy_files: List[pathlib.Path] = []) -> None:
     if keystore_path is None:
         keystore_path = _utilities.get_keystore_path_from_env()
         if keystore_path is None:
-            return
+            return False
     if not keystore.is_valid_keystore(keystore_path):
         print('%s is not a valid keystore, creating new keystore' % keystore_path)
         keystore.create_keystore(keystore_path)
@@ -38,8 +37,6 @@ def generate_artifacts(
     for identity in identity_names:
         keystore.create_enclave(keystore_path, identity)
     for policy_file in policy_files:
-        # FIXME load_policy should raise something else
-        # than RuntimeError and it should be caught here
         policy_tree = load_policy(policy_file)
         enclaves_element = policy_tree.find('enclaves')
         for enclave in enclaves_element:

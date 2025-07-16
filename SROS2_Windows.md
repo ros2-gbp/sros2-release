@@ -14,7 +14,7 @@ Please follow [these instructions](https://docs.ros.org/en/rolling/Installation/
 
 To build the ROS 2 code with security extensions, call:
 ```bat
-colcon build --cmake-args -DSECURITY=ON --packages-select fastdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp rmw_fastrtps_shared_cpp
+colcon build --cmake-args -DSECURITY=ON --packages-select fastrtps rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp rmw_fastrtps_shared_cpp
 ```
 
 ### Install OpenSSL
@@ -84,12 +84,13 @@ set ROS_SECURITY_STRATEGY=Enforce
 
 ## Run the demo
 
-ROS 2 allows you to [change DDS implementation at runtime](https://docs.ros.org/en/rolling/Guides/Working-with-multiple-RMW-implementations.html).
-This demo can be run with FastDDS / CycloneDDS / ConnextDDS by setting the `RMW_IMPLEMENTATION` variable, e.g.:
-
+ROS2 allows you to [change DDS implementation at runtime](https://docs.ros.org/en/rolling/Guides/Working-with-multiple-RMW-implementations.html).
+This demo can be run with fastrtps by setting:
 ```bat
-set RMW_IMPLEMENTATION=rmw_fastrtps_cpp  # or
-set RMW_IMPLEMENTATION=rmw_cyclonedds_cpp  # or
+set RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+```
+And with Connext by setting:
+```bat
 set RMW_IMPLEMENTATION=rmw_connextdds
 ```
 
@@ -123,42 +124,6 @@ If you look at the packet contents on e.g. Wireshark, the messages will be encry
 Note: You can switch between the C++ (demo_nodes_cpp) and Python (demo_nodes_py) packages arbitrarily.
 
 These nodes are able to communicate because we have created the appropriate keys and certificates for them.
-
-To be able to use the ros2 CLI tools to interact with your secured system, you need to provide it with an override enclave:
-```bat
-set ROS_SECURITY_ENCLAVE_OVERRIDE=/talker_listener/listener
-```
-
-Then use the CLI with `--no-daemon` and `--spin-time`:
-
-> [!NOTE]
-> Avoid using `ros2 daemon` since it may not have security enclaves, and enough time duration should be given for the discovery in secured network.
-
-```bat
-ros2 node list --no-daemon --spin-time 4
-```
-```
-/talker
-```
-```bat
-ros2 topic list --no-daemon --spin-time 4
-```
-```
-/chatter
-/parameter_events
-/rosout
-```
-```bat
-ros2 topic echo /chatter --spin-time 4
-```
-```
-[INFO] [1714897092.882384995] [rcl]: Found security directory: /root/sros2_demo/demo_keystore/enclaves/talker_listener/listener
-data: 'Hello World: 257'
----
-data: 'Hello World: 258'
----
-
-```
 
 ### Access Control
 

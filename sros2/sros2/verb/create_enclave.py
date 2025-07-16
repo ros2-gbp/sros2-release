@@ -14,8 +14,13 @@
 
 import pathlib
 import sys
+import warnings
 
-from argcomplete.completers import DirectoriesCompleter
+try:
+    from argcomplete.completers import DirectoriesCompleter
+except ImportError:
+    def DirectoriesCompleter():
+        return None
 
 import sros2.keystore
 from sros2.verb import VerbExtension
@@ -36,3 +41,13 @@ class CreateEnclaveVerb(VerbExtension):
             print(f'Unable to create enclave: {str(e)}', file=sys.stderr)
             return 1
         return 0
+
+
+class CreateKeyVerb(CreateEnclaveVerb):
+    """DEPRECATED: Create enclave. Use create_enclave instead."""
+
+    def main(self, *, args) -> int:
+        warnings.warn(
+            'create_key is deprecated and will be removed in a future release. Use create_enclave '
+            'instead.', FutureWarning)
+        return super().main(args=args)
