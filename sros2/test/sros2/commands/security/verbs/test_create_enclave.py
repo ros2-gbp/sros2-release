@@ -34,8 +34,8 @@ from sros2.policy import get_transport_schema
 
 # This fixture will run once for the entire module (as opposed to once per test)
 @pytest.fixture(scope='module')
-def enclave_keys_dir(tmpdir_factory) -> Path:
-    keystore_dir = Path(str(tmpdir_factory.mktemp('keystore')))
+def enclave_keys_dir(tmp_path_factory) -> Path:
+    keystore_dir = tmp_path_factory.mktemp('keystore')
 
     # First, create the keystore
     sros2.keystore.create_keystore(keystore_dir)
@@ -96,12 +96,11 @@ def test_create_enclave(enclave_keys_dir):
         assert (enclave_keys_dir / expected_file).is_file()
 
 
-def test_create_enclave_twice(tmpdir):
-    keystore_dir = Path(tmpdir)
-
+def test_create_enclave_twice(tmp_path):
     # First, create the keystore
-    sros2.keystore.create_keystore(keystore_dir)
-    assert keystore_dir.is_dir()
+    sros2.keystore.create_keystore(tmp_path)
+    assert tmp_path.is_dir()
+    keystore_dir = tmp_path
 
     # Now using that keystore, create an enclave
     assert cli.main(
@@ -123,13 +122,30 @@ def test_cert_pem(enclave_keys_dir):
     assert isinstance(cert.signature_hash_algorithm, hashes.SHA256)
 
     # Verify the cert is valid for the expected timespan
-    utcnow = datetime.datetime.utcnow()
+    utcnow = datetime.datetime.now(datetime.timezone.utc)
 
-    # Using a day earlier here to prevent Connext (5.3.1) from complaining
-    # when extracting it from the permissions file and thinking it's in the future
-    # https://github.com/ros2/ci/pull/436#issuecomment-624874296
-    assert _datetimes_are_close(cert.not_valid_before, utcnow - datetime.timedelta(days=1))
-    assert _datetimes_are_close(cert.not_valid_after, utcnow + datetime.timedelta(days=3650))
+    # TODO use `not_valid_before_utc` unconditionally once cryptography 42 is available
+    # on all target platforms
+    if hasattr(cert, 'not_valid_before_utc'):
+        cert_not_valid_before_value = cert.not_valid_before_utc
+    else:
+        cert_not_valid_before_value = cert.not_valid_before.replace(tzinfo=datetime.timezone.utc)
+
+    # TODO use `not_valid_after_utc` unconditionally once cryptography 42 is available
+    # on all target platforms
+    if hasattr(cert, 'not_valid_after_utc'):
+        cert_not_valid_after_value = cert.not_valid_after_utc
+    else:
+        cert_not_valid_after_value = cert.not_valid_after.replace(tzinfo=datetime.timezone.utc)
+
+    assert _datetimes_are_close(
+        cert_not_valid_before_value,
+        utcnow
+    )
+    assert _datetimes_are_close(
+        cert_not_valid_after_value,
+        utcnow + datetime.timedelta(days=3650)
+    )
 
     # Verify that the cert ensures this key cannot be used to sign others as a CA
     assert len(cert.extensions) == 1
