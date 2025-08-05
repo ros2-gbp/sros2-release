@@ -49,6 +49,7 @@ def generate_test_description(rmw_implementation: str, use_daemon: bool):
             f'Using {rmw_implementation} w/o a daemon makes tests flaky'
         )
 
+    additional_env = {'RMW_IMPLEMENTATION': rmw_implementation}
     path_to_pub_sub_node_script = os.path.join(
         os.path.dirname(__file__), 'fixtures', 'pub_sub_node.py'
     )
@@ -64,6 +65,7 @@ def generate_test_description(rmw_implementation: str, use_daemon: bool):
         ],
         name=pub_sub_node_name,
         namespace=pub_sub_node_namespace,
+        additional_env=additional_env
     )
     path_to_client_srv_node_script = os.path.join(
         os.path.dirname(__file__), 'fixtures', 'client_service_node.py'
@@ -80,6 +82,7 @@ def generate_test_description(rmw_implementation: str, use_daemon: bool):
         ],
         name=client_srv_node_name,
         namespace=client_srv_node_namespace,
+        additional_env=additional_env
     )
     return generate_sros2_cli_test_description(
         fixture_actions=[
