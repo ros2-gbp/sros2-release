@@ -23,7 +23,7 @@ package_name = 'sros2'
 
 setup(
     name=package_name,
-    version='0.13.4',
+    version='0.16.3',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/' + package_name, ['package.xml']),
@@ -41,7 +41,6 @@ setup(
     keywords=['ROS'],
     classifiers=[
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
         'Topic :: Software Development',
     ],
@@ -51,7 +50,11 @@ SROS2 provides command-line tools to help generate keys and \
 certificates which are then used by supported middleware implementations to \
 enhance the security of ROS 2 deployments.""",
     license='Apache License, Version 2.0',
-    tests_require=['pytest'],
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
     entry_points={
         'ros2cli.command': [
             'security = sros2.command.security:SecurityCommand',
@@ -60,10 +63,6 @@ enhance the security of ROS 2 deployments.""",
             'sros2.verb = sros2.verb:VerbExtension',
         ],
         'sros2.verb': [
-            # These are deprecated
-            'create_key = sros2.verb.create_enclave:CreateKeyVerb',
-            'list_keys = sros2.verb.list_enclaves:ListKeysVerb',
-
             'create_enclave = sros2.verb.create_enclave:CreateEnclaveVerb',
             'create_keystore = sros2.verb.create_keystore:CreateKeystoreVerb',
             'create_permission = sros2.verb.create_permission'

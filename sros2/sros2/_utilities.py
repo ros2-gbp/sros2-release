@@ -71,7 +71,7 @@ def build_key_and_cert(subject_name, *, ca=False, ca_key=None, issuer_name=''):
         issuer_name = subject_name
 
     # DDS-Security section 9.3.1 calls for prime256v1, for which SECP256R1 is an alias
-    private_key = ec.generate_private_key(ec.SECP256R1, cryptography_backend())
+    private_key = ec.generate_private_key(ec.SECP256R1(), cryptography_backend())
     if not ca_key:
         ca_key = private_key
 
@@ -80,17 +80,14 @@ def build_key_and_cert(subject_name, *, ca=False, ca_key=None, issuer_name=''):
     else:
         extension = x509.BasicConstraints(ca=False, path_length=None)
 
-    utcnow = datetime.datetime.utcnow()
+    utcnow = datetime.datetime.now(datetime.timezone.utc)
     builder = x509.CertificateBuilder(
         ).issuer_name(
             issuer_name
         ).serial_number(
             x509.random_serial_number()
         ).not_valid_before(
-            # Using a day earlier here to prevent Connext (5.3.1) from complaining
-            # when extracting it from the permissions file and thinking it's in the future
-            # https://github.com/ros2/ci/pull/436#issuecomment-624874296
-            utcnow - datetime.timedelta(days=1)
+            utcnow
         ).not_valid_after(
             # TODO: This should not be hard-coded
             utcnow + datetime.timedelta(days=3650)
