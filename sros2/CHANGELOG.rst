@@ -2,70 +2,22 @@
 Changelog for package sros2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.13.5 (2026-01-12)
+0.10.8 (2026-01-12)
 -------------------
-* fix setuptools deprecations (`#357 <https://github.com/ros2/sros2/issues/357>`_) (`#364 <https://github.com/ros2/sros2/issues/364>`_)
+* fix setuptools deprecations (`#357 <https://github.com/ros2/sros2/issues/357>`_) (`#365 <https://github.com/ros2/sros2/issues/365>`_)
 * Contributors: mergify[bot]
 
-0.13.4 (2025-08-05)
+0.10.7 (2025-07-16)
 -------------------
-* suppress multi-threaded warnings. (`#346 <https://github.com/ros2/sros2/issues/346>`_) (`#350 <https://github.com/ros2/sros2/issues/350>`_)
-  (cherry picked from commit 06ab5aafad9c15ff2a01a268f5cd1cc6134abf3a)
-  Co-authored-by: Tomoya Fujita <Tomoya.Fujita@sony.com>
+* suppress multi-threaded warnings. (`#346 <https://github.com/ros2/sros2/issues/346>`_) (`#351 <https://github.com/ros2/sros2/issues/351>`_)
 * Contributors: mergify[bot]
 
-0.13.3 (2025-04-02)
+0.10.6 (2025-03-25)
 -------------------
-* fix github-workflow mypy error. (`#336 <https://github.com/ros2/sros2/issues/336>`_) (`#337 <https://github.com/ros2/sros2/issues/337>`_)
-  (cherry picked from commit 8fd7b70df5d91b19a76a6025cb32e6f44c4d7cdd)
-  Co-authored-by: Tomoya Fujita <Tomoya.Fujita@sony.com>
+* fix github-workflow mypy error. (`#336 <https://github.com/ros2/sros2/issues/336>`_) (`#338 <https://github.com/ros2/sros2/issues/338>`_)
 * Contributors: mergify[bot]
 
-0.13.2 (2024-06-27)
--------------------
-* Fix sros2 tests on Windows Debug. (`#317 <https://github.com/ros2/sros2/issues/317>`_) (`#320 <https://github.com/ros2/sros2/issues/320>`_)
-  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-* [TESTS] Update tests and add test for generate_artifacts (`#311 <https://github.com/ros2/sros2/issues/311>`_) (`#319 <https://github.com/ros2/sros2/issues/319>`_)
-  Co-authored-by: Mikael Arguedas <mikael.arguedas@gmail.com>
-* Contributors: mergify[bot]
-
-0.13.1 (2024-05-13)
--------------------
-* Fix linux tutorial: cloning example policies and set of default policies for a node (`#295 <https://github.com/ros2/sros2/issues/295>`_) (`#296 <https://github.com/ros2/sros2/issues/296>`_)
-  * clone policies to temporary dir as subversion hack doesnt work anymore
-  * add get_type_description service to policies
-  * update MacOS similarly
-  * update all permissions with new topics
-  * dont rule out cycloneDDS
-  * example of enclave override
-  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-  (cherry picked from commit ca6bb12cc650b73e7ccfc0fa789d8b49358d44ad)
-  Co-authored-by: Mikael Arguedas <mikael.arguedas@gmail.com>
-* Contributors: mergify[bot]
-
-0.13.0 (2024-02-07)
--------------------
-* Use modern PKCS7 to sign the certificate bytes. (`#290 <https://github.com/ros2/sros2/issues/290>`_)
-* Fix a number of warnings on Ubuntu 24.04. (`#289 <https://github.com/ros2/sros2/issues/289>`_)
-* Contributors: Chris Lalancette
-
-0.12.1 (2023-05-19)
--------------------
-* Fix SSH commands in SROS2_Linux.md (`#286 <https://github.com/ros2/sros2/issues/286>`_)
-* Contributors: Boris Boutillier
-
-0.12.0 (2023-04-28)
--------------------
-
-0.11.2 (2023-04-11)
--------------------
-* Make type of get_package_share_directory apparent for sphinx (`#284 <https://github.com/ros2/sros2/issues/284>`_)
-* Contributors: Yadu
-
-0.11.1 (2022-09-13)
--------------------
-
-0.11.0 (2022-05-04)
+0.10.5 (2024-05-15)
 -------------------
 
 0.10.4 (2022-04-08)

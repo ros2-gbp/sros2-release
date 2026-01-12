@@ -15,8 +15,16 @@
 import pathlib
 import sys
 
-from argcomplete.completers import DirectoriesCompleter
-from argcomplete.completers import FilesCompleter
+try:
+    from argcomplete.completers import DirectoriesCompleter
+except ImportError:
+    def DirectoriesCompleter():
+        return None
+try:
+    from argcomplete.completers import FilesCompleter
+except ImportError:
+    def FilesCompleter(*, allowednames, directories):
+        return None
 
 from sros2.api import _artifact_generation
 import sros2.errors
