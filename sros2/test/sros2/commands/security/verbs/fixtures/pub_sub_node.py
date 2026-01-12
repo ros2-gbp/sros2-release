@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import rclpy
-from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 
 import test_msgs.msg
@@ -38,12 +37,17 @@ class PubSubNode(Node):
 
 
 def main(args=None):
+    rclpy.init(args=args)
+
+    node = PubSubNode()
+
     try:
-        with rclpy.init(args=args):
-            node = PubSubNode()
-            rclpy.spin(node)
-    except (KeyboardInterrupt, ExternalShutdownException):
+        rclpy.spin(node)
+    except KeyboardInterrupt:
         print('node stopped cleanly')
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
 
 
 if __name__ == '__main__':
