@@ -1,18 +1,21 @@
-# Context
-[![SROS2 CI](https://github.com/ros2/sros2/actions/workflows/test.yml/badge.svg?branch=rolling)](https://github.com/ros2/sros2/actions/workflows/test.yml?query=branch%3Arolling)
-[![codecov](https://codecov.io/gh/ros2/sros2/branch/rolling/graph/badge.svg)](https://codecov.io/gh/ros2/sros2)
+# Security Helper
+Add authentication, cryptography, and access control security keys using a cmake macro.
+The macro will generate the secure root directory if it does not exists, then create authentication and cryptography keys.
 
-This package provides the tools and instructions to use ROS 2 on top of DDS-Security.
-The security feature is tested across platforms (Linux, macOS, and Windows) as well as across different languages (C++ and Python).
+In package.xml add:  
+`<depend>sros2_cmake</depend>`  
+In CMakeLists add:  
+`find_package(sros2_cmake REQUIRED)`  
+`sros2_generate_artifacts(ENCLAVES <enclave_name>)`  
 
-This package has been tested against eProsima FastDDS, Eclipse CycloneDDS and RTI Connext.
-If you want to run the demo using RTI Connext Secure you will need a license for it and you will need to install it.
+Macro definition:  
+```
+    # sros2_generate_artifacts(ENCLAVES <enclave_1> <enclave_2>...<enclave_n>)
 
-These Tutorials are written for the latest state of the repository.
-If you are using an older ROS 2 distribution please refer to the tutorials on the branch named after the distribution, e.g. for Crystal: https://github.com/ros2/sros2/blob/crystal/README.md
-
-[Try SROS2 on Linux](SROS2_Linux.md)
-
-[Try SROS2 on MacOS](SROS2_MacOS.md)
-
-[Try SROS2 on Windows](SROS2_Windows.md)
+    # ENCLAVES (macro multi-arg) takes the enclaves names for which keys will be generated
+    #   Executables can use a different or the same enclaves.
+    #   All nodes in the same process use the same enclave.
+    # SECURITY (cmake arg) if not define or OFF, will not generate key/keystores
+    # ROS_SECURITY_KEYSTORE (env variable) the location of the keystore
+    # POLICY_FILE (cmake arg) if defined, will generate security artifacts for each enclave defined in the policy file.
+```
