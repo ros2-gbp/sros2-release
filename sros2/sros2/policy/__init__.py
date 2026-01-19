@@ -12,52 +12,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from importlib import resources
 import pathlib
 
 from lxml import etree
 
-try:
-    import importlib.resources as importlib_resources
-except ModuleNotFoundError:
-    # (clalancette): This fallback is necessary when importlib-resources is installed from pip.
-    # Note that we have to ignore the type, otherwise mypy throws a warning.
-    # See https://github.com/python/mypy/issues/1153 for details.
-    import importlib_resources  # type: ignore
-
 POLICY_VERSION = '0.2.0'
 
 
+def _get_path(template: str, name: str):
+    return resources.files(template).joinpath(name)
+
+
 def get_policy_default(name: str) -> pathlib.Path:
-    with importlib_resources.path('sros2.policy.defaults', name) as path:
-        return path
+    return _get_path('sros2.policy.defaults', name)
 
 
 def get_policy_schema(name: str) -> pathlib.Path:
-    with importlib_resources.path('sros2.policy.schemas', name) as path:
-        return path
+    return _get_path('sros2.policy.schemas', name)
 
 
 def get_policy_template(name: str) -> pathlib.Path:
-    with importlib_resources.path('sros2.policy.templates', name) as path:
-        return path
+    return _get_path('sros2.policy.templates', name)
 
 
 def get_transport_default(transport: str, name: str) -> pathlib.Path:
     module = 'sros2.policy.defaults.' + transport
-    with importlib_resources.path(module, name) as path:
-        return path
+    return _get_path(module, name)
 
 
 def get_transport_schema(transport: str, name: str) -> pathlib.Path:
     module = 'sros2.policy.schemas.' + transport
-    with importlib_resources.path(module, name) as path:
-        return path
+    return _get_path(module, name)
 
 
 def get_transport_template(transport: str, name: str) -> pathlib.Path:
     module = 'sros2.policy.templates.' + transport
-    with importlib_resources.path(module, name) as path:
-        return path
+    return _get_path(module, name)
 
 
 def load_policy(policy_file_path: pathlib.Path) -> etree.ElementTree:

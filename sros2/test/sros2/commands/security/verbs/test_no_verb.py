@@ -1,4 +1,4 @@
-# Copyright 2019 Canonical Ltd
+# Copyright 2024 Mikael Arguedas
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ament_mypy.main import main
-import pytest
+from ros2cli import cli
 
 
-@pytest.mark.mypy
-@pytest.mark.linter
-def test_mypy():
-    assert main(argv=[]) == 0, 'Found errors'
+def test_no_verb(capsys):
+    assert cli.main(argv=['security']) == 0
+    output = capsys.readouterr().out.rstrip()
+    assert 'Call `ros2 security <command> -h` for more detailed usage.' in output
