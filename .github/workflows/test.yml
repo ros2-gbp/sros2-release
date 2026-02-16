@@ -20,9 +20,8 @@ jobs:
         apt-get -qq update
         apt-get -qq upgrade -y
         apt-get -qq install -y curl libasio-dev libssl-dev libtinyxml2-dev python3-colcon-coveragepy-result
-    - uses: ros-tooling/action-ros-ci@v0.3
+    - uses: ros-tooling/action-ros-ci@v0.4
       with:
-        rosdep-skip-keys: rti-connext-dds-6.0.1
         package-name: |
           sros2
           sros2_cmake
@@ -42,12 +41,12 @@ jobs:
         vcs-repo-file-url: https://raw.githubusercontent.com/ros2/ros2/rolling/ros2.repos
 
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/rolling')
       with:
-        file: ros_ws/build/sros2/coverage.xml
+        files: ros_ws/build/sros2/coverage.xml
         flags: unittests
         name: sros2-coverage
         fail_ci_if_error: true
@@ -64,7 +63,7 @@ jobs:
     # does *not* include the security plugins or a license allowing the use of Security
     container: osrf/ros2:nightly-rmw-nonfree
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Installing dependencies
       run: |
         apt-get -qq update
