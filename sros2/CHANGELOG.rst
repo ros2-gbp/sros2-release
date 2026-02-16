@@ -2,32 +2,23 @@
 Changelog for package sros2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.16.4 (2026-02-16)
+0.15.5 (2026-02-16)
 -------------------
-* python3-pytest-timeout is missing for test dependency. (`#377 <https://github.com/ros2/sros2/issues/377>`_)
+* python3-pytest-timeout is missing for test dependency. (`#377 <https://github.com/ros2/sros2/issues/377>`_) (`#378 <https://github.com/ros2/sros2/issues/378>`_)
+* Contributors: mergify[bot]
+
+0.15.4 (2026-01-19)
+-------------------
+* kilted backports of rmw_test_fixture (`#376 <https://github.com/ros2/sros2/issues/376>`_)
 * Contributors: Tomoya Fujita
 
-0.16.3 (2026-01-12)
+0.15.3 (2025-01-12)
 -------------------
-* Clean up isolated ros2 daemon process for tests. (`#375 <https://github.com/ros2/sros2/issues/375>`_)
-* Remove importlib (`#368 <https://github.com/ros2/sros2/issues/368>`_)
-* Contributors: Michael Carlstrom, Tomoya Fujita
-
-0.16.2 (2025-07-29)
--------------------
-* Timezone aware datetimes + remove hack from `#209 <https://github.com/ros2/sros2/issues/209>`_ (`#300 <https://github.com/ros2/sros2/issues/300>`_)
-* fix setuptools deprecations (`#357 <https://github.com/ros2/sros2/issues/357>`_)
-* Use rmw_test_fixture to isolate ros2cli tests (`#356 <https://github.com/ros2/sros2/issues/356>`_)
-* Contributors: Mikael Arguedas, Scott K Logan, mosfet80
-
-0.16.1 (2025-07-01)
--------------------
-* update utilities to pass instance not class of ec.SECP256R1 (`#352 <https://github.com/ros2/sros2/issues/352>`_)
-* suppress multi-threaded warnings. (`#346 <https://github.com/ros2/sros2/issues/346>`_)
-* Contributors: Tomoya Fujita, cdisco
-
-0.16.0 (2025-04-25)
--------------------
+* Remove importlib (`#368 <https://github.com/ros2/sros2/issues/368>`_) (`#369 <https://github.com/ros2/sros2/issues/369>`_)
+* fix setuptools deprecations (`#357 <https://github.com/ros2/sros2/issues/357>`_) (`#363 <https://github.com/ros2/sros2/issues/363>`_)
+* update utilities to pass instance not class of ec.SECP256R1 (`#352 <https://github.com/ros2/sros2/issues/352>`_) (`#353 <https://github.com/ros2/sros2/issues/353>`_)
+* suppress multi-threaded warnings. (`#346 <https://github.com/ros2/sros2/issues/346>`_) (`#349 <https://github.com/ros2/sros2/issues/349>`_)
+* Contributors: mergify[bot]
 
 0.15.2 (2025-04-25)
 -------------------
